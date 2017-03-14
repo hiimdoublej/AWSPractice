@@ -1,5 +1,5 @@
 //
-//  FirstViewController.h
+//  ThirdViewController.h
 //  TabbedAppPractive
 //
 //  Created by 張閎傑 on 3/14/17.
@@ -7,10 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
-@interface FirstViewController : UIViewController
-
+@interface ThirdViewController : UIViewController
 
 @end
-
