@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		569FD09E4878E448C072EDFB /* Pods_TabbedAppPractive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 607F007873C6098262019871 /* Pods_TabbedAppPractive.framework */; };
+		AEC22A181E79011900B76616 /* DynamoDBActions.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC22A171E79011900B76616 /* DynamoDBActions.m */; };
+		AEC22A1B1E791CCE00B76616 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC22A1A1E791CCE00B76616 /* DetailViewController.m */; };
 		AED053C61E77B819001B677C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AED053C51E77B819001B677C /* main.m */; };
 		AED053C91E77B819001B677C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AED053C81E77B819001B677C /* AppDelegate.m */; };
 		AED053CC1E77B819001B677C /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED053CB1E77B819001B677C /* FirstViewController.m */; };
@@ -23,6 +25,10 @@
 		14E3267F4ABDE784F4431184 /* Pods-TabbedAppPractive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TabbedAppPractive.release.xcconfig"; path = "Pods/Target Support Files/Pods-TabbedAppPractive/Pods-TabbedAppPractive.release.xcconfig"; sourceTree = "<group>"; };
 		607F007873C6098262019871 /* Pods_TabbedAppPractive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TabbedAppPractive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97BD2E6CC9627BBE5E4D79B5 /* Pods-TabbedAppPractive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TabbedAppPractive.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TabbedAppPractive/Pods-TabbedAppPractive.debug.xcconfig"; sourceTree = "<group>"; };
+		AEC22A161E79011900B76616 /* DynamoDBActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamoDBActions.h; sourceTree = "<group>"; };
+		AEC22A171E79011900B76616 /* DynamoDBActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamoDBActions.m; sourceTree = "<group>"; };
+		AEC22A191E791CCE00B76616 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		AEC22A1A1E791CCE00B76616 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		AED053C11E77B819001B677C /* TabbedAppPractive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TabbedAppPractive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AED053C51E77B819001B677C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AED053C71E77B819001B677C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -89,14 +95,18 @@
 				AED053CB1E77B819001B677C /* FirstViewController.m */,
 				AED053CD1E77B819001B677C /* SecondViewController.h */,
 				AED053CE1E77B819001B677C /* SecondViewController.m */,
-				AED053D01E77B819001B677C /* Main.storyboard */,
+				AEC22A191E791CCE00B76616 /* DetailViewController.h */,
+				AEC22A1A1E791CCE00B76616 /* DetailViewController.m */,
 				AEFAE2B91E77DF4C0048455C /* FBLoginView.h */,
 				AEFAE2BA1E77DF4C0048455C /* FBLoginView.m */,
 				AED053DE1E77B978001B677C /* ThirdViewController.h */,
 				AED053DF1E77B978001B677C /* ThirdViewController.m */,
+				AED053D01E77B819001B677C /* Main.storyboard */,
 				AED053D31E77B819001B677C /* Assets.xcassets */,
 				AED053D51E77B81A001B677C /* LaunchScreen.storyboard */,
 				AED053D81E77B81A001B677C /* Info.plist */,
+				AEC22A161E79011900B76616 /* DynamoDBActions.h */,
+				AEC22A171E79011900B76616 /* DynamoDBActions.m */,
 				AED053C41E77B819001B677C /* Supporting Files */,
 			);
 			path = TabbedAppPractive;
@@ -240,8 +250,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEC22A181E79011900B76616 /* DynamoDBActions.m in Sources */,
 				AEFAE2BB1E77DF4C0048455C /* FBLoginView.m in Sources */,
 				AED053CF1E77B819001B677C /* SecondViewController.m in Sources */,
+				AEC22A1B1E791CCE00B76616 /* DetailViewController.m in Sources */,
 				AED053E01E77B978001B677C /* ThirdViewController.m in Sources */,
 				AED053C91E77B819001B677C /* AppDelegate.m in Sources */,
 				AED053CC1E77B819001B677C /* FirstViewController.m in Sources */,

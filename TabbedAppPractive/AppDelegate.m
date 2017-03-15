@@ -19,6 +19,13 @@
     [FBSDKButton class];
     [[FBSDKApplicationDelegate sharedInstance] application:application
                              didFinishLaunchingWithOptions:launchOptions];
+    //AWS part
+    id<AWSIdentityProviderManager> IPM = [[FirstViewController alloc]init];
+    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSWest2 identityPoolId:@"us-west-2:e0ecee19-a1f8-4faa-afa4-d9d7ef75f8f0" identityProviderManager:IPM];
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSWest2
+                                                                         credentialsProvider:credentialsProvider];
+    
+    AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
     // Override point for customization after application launch.
     return YES;
 }

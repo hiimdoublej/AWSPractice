@@ -8,9 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <AWSCore/AWSCore.h>
+#import <AWSCore/AWSIdentityProvider.h>
+#import <AWSCore/AWSCredentialsProvider.h>
+#import "DynamoDBActions.h"
+#import "DetailViewController.h"
 
-@interface FirstViewController : UIViewController
+@interface FirstViewController : UIViewController<AWSIdentityProviderManager,UISearchBarDelegate>
 
+@property (weak, nonatomic) IBOutlet UISearchBar *mySearchBar;
 
 @end
 
