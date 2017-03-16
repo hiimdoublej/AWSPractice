@@ -112,8 +112,15 @@
         queryExpression.exclusiveStartKey = self.lastEvaluatedKey;
         queryExpression.limit = @20;
         
-        AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
-        
+        AWSDynamoDBObjectMapper *dynamoDBObjectMapper;
+        if([FBSDKAccessToken currentAccessToken])//token present,cognito identity authenticated by facebook
+        {
+            dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+        }
+        else//unauthenticated, use IP2UnAuthRole as objectmapper
+        {
+            dynamoDBObjectMapper = [AWSDynamoDBObjectMapper DynamoDBObjectMapperForKey:@"IP2UnAuthRole"];
+        }
         return [[[dynamoDBObjectMapper query:[DDBTableRow class]
                                   expression:queryExpression]
                  continueWithExecutor:[AWSExecutor mainThreadExecutor] withSuccessBlock:
@@ -137,13 +144,20 @@
                      return nil;
                  }] continueWithExecutor:[AWSExecutor mainThreadExecutor] withBlock:^id(AWSTask *task)
                 {
+                    [self.lock unlock];
+                    [activityIndicator stopAnimating];
                     if(task.error)
                     {
                         NSLog(@"AWS Error: [%@]", task.error);
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"Error retrieving data from server. Please try again in a moment." preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+                        [alert addAction:defaultAction];
+                        [self presentViewController:alert animated:YES completion:^(void){}];
                     }
-                    [self.lock unlock];
-                    [activityIndicator stopAnimating];
-                    [self performSegueWithIdentifier:@"ToDetailView" sender:_tableRows];
+                    else{
+                        //task success
+                        [self performSegueWithIdentifier:@"ToDetailView" sender:_tableRows];
+                    }
                     return nil;
                 }];
     };
@@ -155,10 +169,12 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    DetailViewController *dvc = segue.destinationViewController;
-    dvc.tableRows = (NSMutableArray*)sender;
+    if([[segue identifier] isEqual:@"ToDetailView"])
+    {
+        DetailViewController *dvc = segue.destinationViewController;
+        dvc.tableRows = (NSMutableArray*)sender;
+    }
 }
-
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     NSString *modified_text = searchBar.text.uppercaseString;

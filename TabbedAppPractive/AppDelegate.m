@@ -16,16 +16,26 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    //facebook part
     [FBSDKButton class];
     [[FBSDKApplicationDelegate sharedInstance] application:application
                              didFinishLaunchingWithOptions:launchOptions];
-    //AWS part
+    //AWS part1 : facebook auth-ed default dynamodb object mapper
     id<AWSIdentityProviderManager> IPM = [[FirstViewController alloc]init];
     AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSWest2 identityPoolId:@"us-west-2:e0ecee19-a1f8-4faa-afa4-d9d7ef75f8f0" identityProviderManager:IPM];
     AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSWest2
                                                                          credentialsProvider:credentialsProvider];
-    
     AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
+    //AWS part2 :UnAuth-ed dynamodb object mapper
+    AWSCognitoCredentialsProvider *UAcredentialsProvider = [[AWSCognitoCredentialsProvider alloc]
+                                                          initWithRegionType:AWSRegionUSWest2
+                                                          identityPoolId:@"us-west-2:e0ecee19-a1f8-4faa-afa4-d9d7ef75f8f0"];
+    
+    AWSServiceConfiguration *UAconfiguration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSWest2 credentialsProvider:UAcredentialsProvider];
+    
+    [AWSServiceManager defaultServiceManager].defaultServiceConfiguration = configuration;
+    AWSDynamoDBObjectMapperConfiguration *UAobjectMapperConfiguration = [[AWSDynamoDBObjectMapperConfiguration alloc]init];
+    [AWSDynamoDBObjectMapper registerDynamoDBObjectMapperWithConfiguration:UAconfiguration objectMapperConfiguration:UAobjectMapperConfiguration forKey:@"IP2UnAuthRole"];
     // Override point for customization after application launch.
     return YES;
 }
