@@ -51,17 +51,17 @@
 
 #pragma mark FaceBook related
 -(void) validateCurrentFBToken
-    {
-        FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields":@"id,email"}];
-        [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-            if (!error) {
-                NSLog(@"request successful to graph api,token is valid");
-                // handle successful response
-            } else {
-                NSLog(@"Error on validating current FB Token: %@", error);
-            }
-        }];
-    }
+{
+    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields":@"id,email"}];
+    [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            NSLog(@"request successful to graph api,token is valid");
+            // handle successful response
+        } else {
+            NSLog(@"Error on validating current FB Token: %@", error);
+        }
+    }];
+}
 
 #pragma mark AWS related
 - (AWSTask<NSDictionary<NSString *, NSString *> *> *)logins {
@@ -77,72 +77,77 @@
 }
 
 -(AWSTask*)AWSQuery:(NSString*)targetPlate start_from_beginning:(BOOL)startFromBeginning
-    {
+{
     if([self.lock tryLock])
-        {
-            NSLog(@"Querying from dynamodb");
-            //show activity indicator
-            UIActivityIndicatorView *activityIndicator  =[[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-
-            [activityIndicator setCenter:CGPointMake(self.view.frame.size.width/2.0, self.view.frame.size.height/2.0)];
-            activityIndicator.hidesWhenStopped = YES;
-            activityIndicator.color = [UIColor blackColor];
-            
-            //add the indicator to the view
-            [self.view addSubview:activityIndicator];
-            //start the indicator animation
-            [activityIndicator startAnimating];
+    {
+        NSLog(@"Querying from dynamodb");
+        //show activity indicator
+        UIActivityIndicatorView *activityIndicator  =[[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        
+        [activityIndicator setCenter:CGPointMake(self.view.frame.size.width/2.0, self.view.frame.size.height/2.0)];
+        activityIndicator.hidesWhenStopped = YES;
+        activityIndicator.color = [UIColor blackColor];
+        
+        //add the indicator to the view
+        [self.view addSubview:activityIndicator];
+        //start the indicator animation
+        [activityIndicator startAnimating];
         if(startFromBeginning)
-            {
-                self.lastEvaluatedKey = nil;
-                self.doneLoading = NO;
-            }
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-            
-            AWSDynamoDBQueryExpression *queryExpression = [AWSDynamoDBQueryExpression new];
-            queryExpression.indexName = @"RideVehiclePlate-index";
-            
-            queryExpression.hashKeyAttribute = @"RideVehiclePlate";
-            queryExpression.hashKeyValues = targetPlate;
-            queryExpression.exclusiveStartKey = self.lastEvaluatedKey;
-            queryExpression.limit = @20;
-            
-            AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
-            
-            return [[[dynamoDBObjectMapper query:[DDBTableRow class]
-                                        expression:queryExpression]
-                                        continueWithExecutor:[AWSExecutor mainThreadExecutor] withSuccessBlock:
-                                        ^id(AWSTask *task)
-            {
-                if(!self.lastEvaluatedKey)
+        {
+            self.lastEvaluatedKey = nil;
+            self.doneLoading = NO;
+        }
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        
+        AWSDynamoDBQueryExpression *queryExpression = [AWSDynamoDBQueryExpression new];
+        queryExpression.indexName = @"RideVehiclePlate-index";
+        
+        queryExpression.keyConditionExpression = @"RideVehiclePlate = :targetPlate";
+        queryExpression.expressionAttributeValues = @{@":targetPlate":targetPlate};
+        
+        //            deprecated methods
+        //            queryExpression.hashKeyAttribute = @"RideVehiclePlate";
+        //            queryExpression.hashKeyValues = targetPlate;
+        
+        queryExpression.exclusiveStartKey = self.lastEvaluatedKey;
+        queryExpression.limit = @20;
+        
+        AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+        
+        return [[[dynamoDBObjectMapper query:[DDBTableRow class]
+                                  expression:queryExpression]
+                 continueWithExecutor:[AWSExecutor mainThreadExecutor] withSuccessBlock:
+                 ^id(AWSTask *task)
+                 {
+                     if(!self.lastEvaluatedKey)
+                     {
+                         [self.tableRows removeAllObjects];
+                     }
+                     AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                     for(DDBTableRow *item in paginatedOutput.items)
+                     {
+                         [self.tableRows addObject:item];
+                     }
+                     self.lastEvaluatedKey = paginatedOutput.lastEvaluatedKey;
+                     if(!paginatedOutput.lastEvaluatedKey)
+                     {
+                         self.doneLoading = YES;
+                     }
+                     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                     return nil;
+                 }] continueWithExecutor:[AWSExecutor mainThreadExecutor] withBlock:^id(AWSTask *task)
                 {
-                    [self.tableRows removeAllObjects];
-                }
-                AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
-                for(DDBTableRow *item in paginatedOutput.items)
-                {
-                    [self.tableRows addObject:item];
-                }
-                self.lastEvaluatedKey = paginatedOutput.lastEvaluatedKey;
-                if(!paginatedOutput.lastEvaluatedKey)
-                {
-                    self.doneLoading = YES;
-                }
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                return nil;
-            }] continueWithExecutor:[AWSExecutor mainThreadExecutor] withBlock:^id(AWSTask *task)
-            {
-                if(task.error)
-                {
-                    NSLog(@"AWS Error: [%@]", task.error);
-                }
-                [self.lock unlock];
-                [activityIndicator stopAnimating];
-                [self performSegueWithIdentifier:@"ToDetailView" sender:_tableRows];
-                return nil;
-            }];
-        };
-        return nil;
+                    if(task.error)
+                    {
+                        NSLog(@"AWS Error: [%@]", task.error);
+                    }
+                    [self.lock unlock];
+                    [activityIndicator stopAnimating];
+                    [self performSegueWithIdentifier:@"ToDetailView" sender:_tableRows];
+                    return nil;
+                }];
+    };
+    return nil;
 }
 
 #pragma mark Search bar mechanics
@@ -153,22 +158,22 @@
     DetailViewController *dvc = segue.destinationViewController;
     dvc.tableRows = (NSMutableArray*)sender;
 }
-    
+
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-    {
-        NSString *modified_text = searchBar.text.uppercaseString;
-        NSLog(@"Searched with text %@",modified_text);
-        [searchBar resignFirstResponder];//dismiss the keyboard
-        [self AWSQuery:modified_text start_from_beginning:YES];
-    }
+{
+    NSString *modified_text = searchBar.text.uppercaseString;
+    NSLog(@"Searched with text %@",modified_text);
+    [searchBar resignFirstResponder];//dismiss the keyboard
+    [self AWSQuery:modified_text start_from_beginning:YES];
+}
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-    {
-        [searchBar resignFirstResponder];
-        NSLog(@"Cancel button clicked");
-    }
+{
+    [searchBar resignFirstResponder];
+    NSLog(@"Cancel button clicked");
+}
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
-    {
-        NSLog(@"Stopped editing");
-    }
+{
+    NSLog(@"Stopped editing");
+}
 
 @end
