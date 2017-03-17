@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "DynamoDBActions.h"
+#import "RideDetailsViewController.h"
 
-@interface DetailViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
+@interface RecordsViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
 @property NSMutableArray *tableRows;
 
 @property (weak, nonatomic) IBOutlet UILabel *PlateNumberLabel;

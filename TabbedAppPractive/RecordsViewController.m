@@ -6,13 +6,13 @@
 //  Copyright © 2017 hiimdoublej. All rights reserved.
 //
 
-#import "DetailViewController.h"
+#import "RecordsViewController.h"
 
-@interface DetailViewController ()
+@interface RecordsViewController ()
 
 @end
 
-@implementation DetailViewController
+@implementation RecordsViewController
 #pragma mark Button action
 
 - (IBAction)goBackButtonPressed:(id)sender {
@@ -34,7 +34,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"DetailCell";
+    static NSString *CellIdentifier = @"RecordCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     DDBTableRow *item = self.tableRows[indexPath.row];
@@ -65,7 +65,18 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //should be unused
+    NSLog(@"Selected element RideTime:%@",[self.tableRows[indexPath.row] RideTime]);
+    [self performSegueWithIdentifier:@"ToRideDetails" sender:self.tableRows[indexPath.row]];
+}
+#pragma mark prepare for segue
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"ToRideDetails"])
+    {
+        RideDetailsViewController *rdvc = [segue destinationViewController];
+        rdvc.rowToDisplay = (DDBTableRow*)sender;
+    }
 }
 
 #pragma mark - Set Labels
@@ -93,7 +104,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self setLabels];
-    NSLog(@"DetailsView did load");
+    NSLog(@"RecordsView did load");
 }
 
 - (void)didReceiveMemoryWarning {

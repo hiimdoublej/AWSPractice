@@ -7,6 +7,7 @@
 //
 
 #import "FirstViewController.h"
+#import "RecordsNavigationController.h"
 
 
 @interface FirstViewController ()
@@ -156,7 +157,18 @@
                     }
                     else{
                         //task success
-                        [self performSegueWithIdentifier:@"ToDetailView" sender:_tableRows];
+                        if([self.tableRows count] !=0)
+                        {
+                            [self performSegueWithIdentifier:@"ToRecordsView" sender:_tableRows];
+                        }
+                        else
+                        {
+                            NSLog(@"No records returen for plate : [%@]", targetPlate);
+                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops!" message:@"No previous reports with this plate number, if you had a ride with that cab, feel free to share your experience with others using the middle page !" preferredStyle:UIAlertControllerStyleAlert];
+                            UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+                            [alert addAction:defaultAction];
+                            [self presentViewController:alert animated:YES completion:^(void){}];
+                        }
                     }
                     return nil;
                 }];
@@ -169,18 +181,45 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([[segue identifier] isEqual:@"ToDetailView"])
+    if([[segue identifier] isEqual:@"ToRecordsView"])
     {
-        DetailViewController *dvc = segue.destinationViewController;
-        dvc.tableRows = (NSMutableArray*)sender;
+        RecordsNavigationController *rnc = segue.destinationViewController;
+        RecordsViewController *rvc = rnc.topViewController;
+        rvc.tableRows = (NSMutableArray*)sender;
     }
 }
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
+    //setup alert first
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Invalid input" message:@"Please check your input again." preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+    [alert addAction:defaultAction];
+    //check the input into the search bar
+    BOOL inputIsValid = NO;
+    NSError *error = NULL;
     NSString *modified_text = searchBar.text.uppercaseString;
-    NSLog(@"Searched with text %@",modified_text);
-    [searchBar resignFirstResponder];//dismiss the keyboard
-    [self AWSQuery:modified_text start_from_beginning:YES];
+    if(modified_text.length<9 && modified_text.length>6)
+    {//check using regular expression
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:
+        @"((([A-Z]|[0-9]){2,3}(-)([A-Z]|[0-9]){3,4}))" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSUInteger numberOfMatches = [regex numberOfMatchesInString:modified_text
+                                                            options:0
+                                                              range:NSMakeRange(0, [modified_text length])];
+        NSLog(@"Searched with text:%@,regex numberOfMatches:%lu",modified_text,(unsigned long)numberOfMatches);
+        inputIsValid = (numberOfMatches==1) ? YES:NO;
+    }
+    
+    if(!inputIsValid)
+    {
+    //invalid input ->show alert
+        [self presentViewController:alert animated:YES completion:^(void){}];
+    }
+    else
+    {
+    //valid input -> query
+        [searchBar resignFirstResponder];//dismiss the keyboard
+        [self AWSQuery:modified_text start_from_beginning:YES];
+    }
 }
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {

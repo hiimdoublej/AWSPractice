@@ -12,7 +12,7 @@
 #import <AWSCore/AWSIdentityProvider.h>
 #import <AWSCore/AWSCredentialsProvider.h>
 #import "DynamoDBActions.h"
-#import "DetailViewController.h"
+#import "RecordsViewController.h"
 
 @interface FirstViewController : UIViewController<AWSIdentityProviderManager,UISearchBarDelegate>
 
