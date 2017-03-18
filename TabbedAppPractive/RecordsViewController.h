@@ -16,6 +16,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *PlateNumberLabel;
 @property (weak, nonatomic) IBOutlet UILabel *RatingLabel;
 
-@property (weak, nonatomic) IBOutlet UITableView *DetailTableView;
+@property (weak, nonatomic) IBOutlet UITableView *RecordTableView;
 
 @end

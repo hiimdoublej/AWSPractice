@@ -184,7 +184,8 @@
     if([[segue identifier] isEqual:@"ToRecordsView"])
     {
         RecordsNavigationController *rnc = segue.destinationViewController;
-        RecordsViewController *rvc = rnc.topViewController;
+        RecordsViewController *rvc = (RecordsViewController*) rnc.topViewController;
+        //type casting the above line to take the warning off
         rvc.tableRows = (NSMutableArray*)sender;
     }
 }

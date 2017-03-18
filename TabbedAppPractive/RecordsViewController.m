@@ -14,8 +14,7 @@
 
 @implementation RecordsViewController
 #pragma mark Button action
-
-- (IBAction)goBackButtonPressed:(id)sender {
+- (IBAction)BackButtonClicked:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^(void){}];
 }
 
@@ -38,8 +37,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     DDBTableRow *item = self.tableRows[indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"Date: %@",item.RideTime];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"Average Rating : %@",item.OverallRating];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@",item.RideTime];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"Rating:%@",item.OverallRating];
     
     return cell;
 }
@@ -66,6 +65,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"Selected element RideTime:%@",[self.tableRows[indexPath.row] RideTime]);
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];//have to manually deselect the row, lesson learned
     [self performSegueWithIdentifier:@"ToRideDetails" sender:self.tableRows[indexPath.row]];
 }
 #pragma mark prepare for segue

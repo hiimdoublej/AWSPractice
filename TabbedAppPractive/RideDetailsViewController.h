@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "DynamoDBActions.h"
 
-@interface RideDetailsViewController : UIViewController
+@interface RideDetailsViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+
 @property DDBTableRow *rowToDisplay;
+@property (weak, nonatomic) IBOutlet UITableView *myTableview;
+
 @end

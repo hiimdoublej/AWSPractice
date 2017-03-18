@@ -135,5 +135,6 @@ static NSString *const AWSSampleDynamoDBTableName = @"LittleYellowPageDB0";
 + (NSArray *)ignoreAttributes {
     return @[@"internalName",@"internalState"];
 }
+
 @end
 
