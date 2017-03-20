@@ -19,6 +19,7 @@
 - (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton
 {
     NSLog(@"Logged out");
+    [self dismissFBLoginView];
 }
 
 - (void)viewDidLoad {
