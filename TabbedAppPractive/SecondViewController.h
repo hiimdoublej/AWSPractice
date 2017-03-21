@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SecondViewController : UIViewController
+@interface SecondViewController : UIViewController<UIPickerViewDelegate,UIPickerViewDataSource>
+
+@property (strong,nonatomic) NSMutableArray *topLevelAdministrativeDivisions;
+@property (strong,nonatomic) NSMutableDictionary *secondLevelAdministratiiveDivisions;
+
 @property (strong, nonatomic) IBOutlet UILabel *loginPromptLabel;
 @property (strong, nonatomic) IBOutlet UIButton *loginButton;
 
