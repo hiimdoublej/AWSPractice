@@ -125,13 +125,13 @@ static NSString *const AWSSampleDynamoDBTableName = @"LittleYellowPageDB0";
     
 + (NSString *)hashKeyAttribute {
     //return @"UserID";
-    return @"DataId";
+    return @"DataID";
 }
     
-+ (NSString *)rangeKeyAttribute {
-    return @"TimeSubmitted";
-}
-    
+//+ (NSString *)rangeKeyAttribute {
+//    return @"";
+//}
+
 + (NSArray *)ignoreAttributes {
     return @[@"internalName",@"internalState"];
 }

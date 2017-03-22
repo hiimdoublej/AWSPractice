@@ -202,7 +202,7 @@
     if(modified_text.length<9 && modified_text.length>6)
     {//check using regular expression
         NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:
-        @"((([A-Z]|[0-9]){2,3}(-)([A-Z]|[0-9]){3,4}))" options:NSRegularExpressionCaseInsensitive error:&error];
+        @"((([A-Z]|[0-9]){2,3}(-)([A-Z]|[0-9]){3,4}))" options:0 error:&error];
         NSUInteger numberOfMatches = [regex numberOfMatchesInString:modified_text
                                                             options:0
                                                               range:NSMakeRange(0, [modified_text length])];

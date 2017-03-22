@@ -11,6 +11,8 @@
 #import "DynamoDBActions.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
+#define kOFFSET_FOR_KEYBOARD 380.0
+
 @interface SecondViewController ()
 
 @end
@@ -18,6 +20,9 @@
 @implementation SecondViewController
 #pragma mark view life cycle
 - (void)viewDidLoad {
+    self.lock = [NSLock new];
+    [self setupRatings];
+    [self setupCommentTextView];
     [self setupPickerViewData];
     NSLog(@"Second View did load.");
     // Do any additional setup after loading the view, typically from a nib.
@@ -30,21 +35,193 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    // register for keyboard notifications]
+    
+    //    [[NSNotificationCenter defaultCenter] addObserver:self
+    //                                             selector:@selector(keyboardWillShow)
+    //                                                 name:UIKeyboardWillShowNotification
+    //                                               object:self.commentTextView];
+    //
+    //    [[NSNotificationCenter defaultCenter] addObserver:self
+    //                                             selector:@selector(keyboardWillHide)
+    //                                                 name:UIKeyboardWillHideNotification
+    //                                               object:self.commentTextView];
     [self showElements];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    // unregister for keyboard notifications while not visible.
+    //    [[NSNotificationCenter defaultCenter] removeObserver:self
+    //                                                    name:UIKeyboardWillShowNotification
+    //                                                  object:nil];
+    //
+    //    [[NSNotificationCenter defaultCenter] removeObserver:self
+    //                                                    name:UIKeyboardWillHideNotification
+    //                                                  object:nil];
+}
+#pragma mark rating system
+-(void)setupRatings
+{
+    [self.RatingStepper setValue:0.0];
+    [self.RatingValue setText:[NSString stringWithFormat:@"%d",(int)self.RatingStepper.value]];
+}
+- (IBAction)tappedOnStepper {
+    [self.RatingValue setText:[NSString stringWithFormat:@"%d",(int)self.RatingStepper.value]];
+    //NSLog(@"Stepper value:%f",self.RatingStepper.value);
+}
+#pragma mark text field methods
+-(void)setupPlateNumberInput
+{
+    [self.plateNumberInput setDelegate:self];
+}
+
+
+#pragma mark keyboard hiding/showing
+-(void)keyboardWillShow {
+    // Animate the current view out of the way
+    if (self.view.frame.origin.y >= 0)
+    {
+        [self setViewMovedUp:YES];
+    }
+    else if (self.view.frame.origin.y < 0)
+    {
+        [self setViewMovedUp:NO];
+    }
+}
+
+-(void)keyboardWillHide {
+    if (self.view.frame.origin.y >= 0)
+    {
+        [self setViewMovedUp:YES];
+    }
+    else if (self.view.frame.origin.y < 0)
+    {
+        [self setViewMovedUp:NO];
+    }
+}
+-(void)setViewMovedUp:(BOOL)movedUp
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3]; // if you want to slide up the view
+    
+    CGRect rect = self.view.frame;
+    if (movedUp)
+    {
+        // 1. move the view's origin up so that the text field that will be hidden come above the keyboard
+        // 2. increase the size of the view so that the area behind the keyboard is covered up.
+        rect.origin.y -= kOFFSET_FOR_KEYBOARD;
+        rect.size.height += kOFFSET_FOR_KEYBOARD;
+    }
+    else
+    {
+        // revert back to the normal state.
+        rect.origin.y += kOFFSET_FOR_KEYBOARD;
+        rect.size.height -= kOFFSET_FOR_KEYBOARD;
+    }
+    self.view.frame = rect;
+    
+    [UIView commitAnimations];
+}
+#pragma mark comment text view configs
+-(void)setupCommentTextView
+{
+    [self.commentTextView setDelegate:self];
+    UITapGestureRecognizer *tapGestureRecognizer;
+    tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
+    tapGestureRecognizer.numberOfTapsRequired = 1;
+    [self.view addGestureRecognizer:tapGestureRecognizer];
+}
+
+-(void)hideKeyboard:(UITapGestureRecognizer*) tapG
+{
+    if([self.plateNumberInput isEditing])
+    {
+        [self.plateNumberInput resignFirstResponder];
+    }else{
+        [self.commentTextView resignFirstResponder];
+    }
+}
+-(void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if ([textView isEqual:self.commentTextView])
+    {
+        //move the main view, so that the keyboard does not hide it.
+        if  (self.view.frame.origin.y >= 0)
+        {
+            self.placeHolderForCommentBox.hidden = YES;//hide placeholder
+            [self setViewMovedUp:YES];
+        }
+    }
+}
+
+- (void)textViewDidChange:(UITextView *)txtView
+{
+    self.placeHolderForCommentBox.hidden = ([txtView.text length] > 0);
+}
+
+- (void)textViewDidEndEditing:(UITextView *)txtView
+{
+    if([txtView isEqual:self.commentTextView])
+    {
+        self.placeHolderForCommentBox.hidden = ([txtView.text length] > 0);
+        [self setViewMovedUp:NO];
+    }
+}
 #pragma mark button action
+-(void)showAlertWithTitle:(NSString*)title message:(NSString*)msg
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:msg
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *act){}];
+    [alert addAction:action];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 - (IBAction)LoginButtonClicked:(id)sender {
     //code snippet for bringing fbLoginView up
     UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     FBLoginView *fbvc = [sb instantiateViewControllerWithIdentifier:@"FBLoginView"];
     [self presentViewController:fbvc animated:YES completion:^(void){}];
 }
-
-- (IBAction)submitInfo:(UIButton *)sender {
+- (AWSTask*)AWSPut
+{
+    if([self.lock tryLock])
     {
-        UIPickerView *LocationPicker = self.PickerView;
+        NSLog(@"Inserting into dynamodb....");
+        //disable button
+        [self.Submit setEnabled:NO];
+        [[self.Submit titleLabel]setText:@"Submitting....."];
+        
+        //show activity indicator
+        UIActivityIndicatorView *activityIndicator  =[[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        
+        [activityIndicator setCenter:CGPointMake(self.view.frame.size.width/2.0, self.view.frame.size.height/2.0)];
+        activityIndicator.hidesWhenStopped = YES;
+        activityIndicator.color = [UIColor blackColor];
+        
+        //add the indicator to the view
+        [self.view addSubview:activityIndicator];
+        //start the indicator animation
+        [activityIndicator startAnimating];
+        
+        static BOOL use_facebook_userid = YES;
+        
+        BOOL inputIsValid = NO;
+        //generate a dataID
+        NSString *d_id = [NSString stringWithFormat:@"%d",(int)[[NSDate date] timeIntervalSince1970]];
+        
+        //set user platform
+        NSString *platform = [NSString new];
+        if([FBSDKAccessToken currentAccessToken])
+        {
+            platform = @"Facebook";
+        }
         //get date string
+        UIPickerView *LocationPicker = self.PickerView;
         NSDate *selectedDate = self.DatePicker.date;
         NSDateFormatter *dfDate = [NSDateFormatter new];
         [dfDate setDateFormat:@"MM/dd/yyyy"];
@@ -57,6 +234,7 @@
         locationToBeReported = [locationToBeReported stringByAppendingString:@"/"];
         NSArray *temp = [self.secondLevelAdministratiiveDivisions objectForKey:[self.topLevelAdministrativeDivisions objectAtIndex:[LocationPicker selectedRowInComponent:0]]];
         locationToBeReported = [locationToBeReported stringByAppendingString:[temp objectAtIndex:[LocationPicker selectedRowInComponent:1]]];
+        
         //get current time from user
         NSDate *now = [NSDate date];
         NSDateFormatter *nsfNow = [NSDateFormatter new];
@@ -65,57 +243,94 @@
         [nsfNow setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT+8"]];
         NSString *currentTime = [nsfNow stringFromDate:now];
         
-        //get user id (udid)
+        //get user id (udid or facebook id)
         UIDevice *device = [UIDevice currentDevice];
         NSUUID *uuid = [device identifierForVendor];
-        NSString *UUID = [uuid UUIDString];
+        NSString *UUID = (use_facebook_userid) ? [[FBSDKAccessToken currentAccessToken]userID] : [uuid UUIDString];
         
-        //submit them to dynamodb
-        DDBTableRow *tableRow = [DDBTableRow new];
-        tableRow.RideLocation = locationToBeReported;
-        tableRow.TimeSubmitted = currentTime;
-        tableRow.UserID = UUID;
-        AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
-        [[dynamoDBObjectMapper save:tableRow] continueWithExecutor:[AWSExecutor mainThreadExecutor] withBlock:^id(AWSTask *task)
-         {
-             if(!task.error)
+        //get plate number
+        NSError *error = NULL;
+        NSString *plateInput = [self.plateNumberInput.text uppercaseString];
+        if(plateInput.length<9 && plateInput.length>6)
+        {//check using regular expression
+            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:
+                                          @"((([A-Z]|[0-9]){2,4}(-)([A-Z]|[0-9]){2,4}))" options:0 error:&error];
+            NSUInteger numberOfMatches = [regex numberOfMatchesInString:plateInput
+                                                                options:0
+                                                                  range:NSMakeRange(0, [plateInput length])];
+            if(numberOfMatches!=1)
+            {
+                [self showAlertWithTitle:@"Oops!" message:@"Incorrect plate number, please check your input !"];
+            }
+            else if(numberOfMatches == 1)
+            {
+                inputIsValid = YES;
+            }
+        }
+        else{
+            [self showAlertWithTitle:@"Oops!" message:@"Plate number length incorrect, please check your input !"];
+        }
+        
+        //get rating
+        NSNumber *rating = [NSNumber numberWithDouble:self.RatingStepper.value];
+        
+        //get comments
+        NSString *comments = self.commentTextView.text;
+        if(comments.length==0)
+        {
+            comments = @"No comment.";
+        }
+        
+        if(inputIsValid)
+        {
+            //submit them to dynamodb
+            DDBTableRow *tableRow = [DDBTableRow new];
+            tableRow.DataID = d_id;
+            tableRow.UserPlatform = platform;
+            tableRow.TimeSubmitted = currentTime;
+            tableRow.UserID = UUID;
+            
+            tableRow.RideTime = dateToBeReported;
+            tableRow.RideLocation = locationToBeReported;
+            tableRow.RideVehiclePlate = plateInput;
+            tableRow.OverallRating = rating;
+            tableRow.RideComment = comments;
+            AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+            //default object mapper is the objectmapper with facebook authentication configuration
+            return [[[dynamoDBObjectMapper save:tableRow] continueWithExecutor:[AWSExecutor mainThreadExecutor] withSuccessBlock:^id(AWSTask *task)
              {
-                 //             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Succeeded"
-                 //                                                             message:@"Successfully inserted the data into the table."
-                 //                                                            delegate:nil
-                 //                                                   cancelButtonTitle:@"OK"
-                 //                                                   otherButtonTitles:nil];
-                 //             [alert show];
-                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Succeeded"
-                                                                                message:@"Successfully insrted data into the table."
-                                                                         preferredStyle:UIAlertControllerStyleAlert];
-                 UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *act){}];
-                 [alert addAction:action];
-                 [self presentViewController:alert animated:YES completion:nil];
-                 
-             }
-             else
-             {
-                 NSLog(@"Error: [%@]", task.error);
-                 //             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                 //                                                             message:@"Failed to insert the data into the table."
-                 //                                                            delegate:nil
-                 //                                                   cancelButtonTitle:@"OK"
-                 //                                                   otherButtonTitles:nil];
-                 //             [alert show];
-                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error"
-                                                                                message:@"Failed to insert the data into the table."
-                                                                         preferredStyle:UIAlertControllerStyleAlert];
-                 UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *act){}];
-                 [alert addAction:action];
-                 [self presentViewController:alert animated:YES completion:nil];
-                 
-             }
-             return nil;
-         }];
-        
-        
+                 if(!task.error)
+                 {
+                     [self showAlertWithTitle:@"Succeeded" message:@"Successfully submitted data for approval !"];
+                 }
+                 else
+                 {
+                     NSLog(@"Error: [%@]", task.error);
+                     [self showAlertWithTitle:@"Error" message:@"Failed to submit data!"];
+                 }
+                 return nil;
+             }] continueWithExecutor:[AWSExecutor mainThreadExecutor] withBlock:^id(AWSTask *task)
+            {
+                [self.lock unlock];
+                [activityIndicator stopAnimating];
+                [self.Submit setEnabled:YES];
+                [[self.Submit titleLabel]setText:@"Submit"];
+                return nil;
+            }]
+            ;
+            
+            
+        }else{
+            [self showAlertWithTitle:@"Error!" message:@"Unexpected error! Something's wrong badly."];
+        }
     }
+    return nil;
+}
+
+- (IBAction)submitInfo:(UIButton *)sender {
+
+    [self AWSPut];
+    
 }
 
 #pragma mark hide-show elements
@@ -206,11 +421,11 @@
     
     [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Jincheng",@"Jinhu",@"Jinsha",@"Jinning",@"Lieyu",@"Wuqiu",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:16]];
     
-        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Magong",@"Baisha",@"Huxi",@"Qimei",@"Xiyu",@"Wang'an",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:17]];
+    [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Magong",@"Baisha",@"Huxi",@"Qimei",@"Xiyu",@"Wang'an",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:17]];
     
     [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Nangan",@"Beigan" ,@"Dongyin",@"Juguang",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:18]];
     
-    }
+}
 
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
