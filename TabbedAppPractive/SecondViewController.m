@@ -298,27 +298,24 @@
             AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
             //default object mapper is the objectmapper with facebook authentication configuration
             return [[[dynamoDBObjectMapper save:tableRow] continueWithExecutor:[AWSExecutor mainThreadExecutor] withSuccessBlock:^id(AWSTask *task)
-             {
-                 if(!task.error)
-                 {
-                     [self showAlertWithTitle:@"Succeeded" message:@"Successfully submitted data for approval !"];
-                 }
-                 else
-                 {
-                     NSLog(@"Error: [%@]", task.error);
-                     [self showAlertWithTitle:@"Error" message:@"Failed to submit data!"];
-                 }
-                 return nil;
+                     { return nil;
              }] continueWithExecutor:[AWSExecutor mainThreadExecutor] withBlock:^id(AWSTask *task)
             {
+                if(!task.error)
+                {
+                    [self showAlertWithTitle:@"Succeeded" message:@"Successfully submitted data for approval !"];
+                }
+                else
+                {
+                    NSLog(@"Error: [%@]", task.error);
+                    [self showAlertWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to submit data ! \n Details:%@",task.error]];
+                }
                 [self.lock unlock];
                 [activityIndicator stopAnimating];
                 [self.Submit setEnabled:YES];
                 [[self.Submit titleLabel]setText:@"Submit"];
                 return nil;
-            }]
-            ;
-            
+            }];
             
         }else{
             [self showAlertWithTitle:@"Error!" message:@"Unexpected error! Something's wrong badly."];
@@ -328,9 +325,7 @@
 }
 
 - (IBAction)submitInfo:(UIButton *)sender {
-
     [self AWSPut];
-    
 }
 
 #pragma mark hide-show elements
@@ -347,6 +342,14 @@
         [self.DatePicker setHidden:NO];
         [self.PickerView setHidden:NO];
         [self.Submit setHidden:NO];
+        [self.plateNumberInput setHidden:NO];
+        [self.PlateNumberText setHidden:NO];
+        [self.RateLabel setHidden:NO];
+        [self.RatingValue setHidden:NO];
+        [self.RatingStepper setHidden:NO];
+        [self.commentTextView setHidden:NO];
+        [self.AnyComments setHidden:NO];
+        [self.placeHolderForCommentBox setHidden:NO];
     }
     else
     {
@@ -358,6 +361,14 @@
         [self.DatePicker setHidden:YES];
         [self.PickerView setHidden:YES];
         [self.Submit setHidden:YES];
+        [self.plateNumberInput setHidden:YES];
+        [self.PlateNumberText setHidden:YES];
+        [self.RateLabel setHidden:YES];
+        [self.RatingValue setHidden:YES];
+        [self.RatingStepper setHidden:YES];
+        [self.commentTextView setHidden:YES];
+        [self.AnyComments setHidden:YES];
+        [self.placeHolderForCommentBox setHidden:YES];
     }
 }
 
