@@ -14,12 +14,15 @@
 #define kOFFSET_FOR_KEYBOARD 380.0
 
 @interface SecondViewController ()
-
+@property BOOL commentBoxEditing;
+@property UIActivityIndicatorView *activityIndicator;
 @end
 
 @implementation SecondViewController
 #pragma mark view life cycle
 - (void)viewDidLoad {
+     self.activityIndicator  =[[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.commentBoxEditing = NO;
     self.lock = [NSLock new];
     [self setupRatings];
     [self setupCommentTextView];
@@ -144,6 +147,17 @@
         [self.commentTextView resignFirstResponder];
     }
 }
+
+-(void)hideKeyboard
+{
+    if([self.plateNumberInput isEditing])
+    {
+        [self.plateNumberInput resignFirstResponder];
+    }else if(self.commentBoxEditing){
+        [self.commentTextView resignFirstResponder];
+    }
+}
+
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
     if ([textView isEqual:self.commentTextView])
@@ -151,6 +165,7 @@
         //move the main view, so that the keyboard does not hide it.
         if  (self.view.frame.origin.y >= 0)
         {
+            self.commentBoxEditing = YES;
             self.placeHolderForCommentBox.hidden = YES;//hide placeholder
             [self setViewMovedUp:YES];
         }
@@ -166,6 +181,7 @@
 {
     if([txtView isEqual:self.commentTextView])
     {
+        self.commentBoxEditing = NO;
         self.placeHolderForCommentBox.hidden = ([txtView.text length] > 0);
         [self setViewMovedUp:NO];
     }
@@ -178,7 +194,12 @@
                                                             preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *act){}];
     [alert addAction:action];
-    [self presentViewController:alert animated:YES completion:nil];
+    [self presentViewController:alert animated:YES completion:^(void){
+        [self.lock unlock];
+        [self.activityIndicator stopAnimating];
+        [self.Submit setEnabled:YES];
+        [[self.Submit titleLabel]setText:@"Submit"];
+    }];
 }
 
 - (IBAction)LoginButtonClicked:(id)sender {
@@ -197,16 +218,14 @@
         [[self.Submit titleLabel]setText:@"Submitting....."];
         
         //show activity indicator
-        UIActivityIndicatorView *activityIndicator  =[[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        
-        [activityIndicator setCenter:CGPointMake(self.view.frame.size.width/2.0, self.view.frame.size.height/2.0)];
-        activityIndicator.hidesWhenStopped = YES;
-        activityIndicator.color = [UIColor blackColor];
+        [self.activityIndicator setCenter:CGPointMake(self.view.frame.size.width/2.0, self.view.frame.size.height/2.0)];
+        self.activityIndicator.hidesWhenStopped = YES;
+        self.activityIndicator.color = [UIColor blackColor];
         
         //add the indicator to the view
-        [self.view addSubview:activityIndicator];
+        [self.view addSubview:self.activityIndicator];
         //start the indicator animation
-        [activityIndicator startAnimating];
+        [self.activityIndicator startAnimating];
         
         static BOOL use_facebook_userid = YES;
         
@@ -310,10 +329,7 @@
                     NSLog(@"Error: [%@]", task.error);
                     [self showAlertWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to submit data ! \n Details:%@",task.error]];
                 }
-                [self.lock unlock];
-                [activityIndicator stopAnimating];
-                [self.Submit setEnabled:YES];
-                [[self.Submit titleLabel]setText:@"Submit"];
+                [self resetElements];
                 return nil;
             }];
             
@@ -325,6 +341,7 @@
 }
 
 - (IBAction)submitInfo:(UIButton *)sender {
+    [self hideKeyboard];
     [self AWSPut];
 }
 
@@ -370,6 +387,17 @@
         [self.AnyComments setHidden:YES];
         [self.placeHolderForCommentBox setHidden:YES];
     }
+}
+
+-(void)resetElements
+{
+    [[self DatePicker]setDate:[NSDate date]];
+    [[self PickerView]selectRow:0 inComponent:0 animated:YES];
+    [[self PickerView]selectRow:0 inComponent:1 animated:YES];
+    [[self plateNumberInput]setText:@""];
+    [[self RatingStepper]setValue:0.0];
+    [[self RatingValue]setText:@"0"];
+    [[self commentTextView]setText:@""];
 }
 
 #pragma mark location picker data source

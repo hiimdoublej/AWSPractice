@@ -37,6 +37,7 @@
     {
         [self validateCurrentFBToken];
     }
+    [self adjustFont];
     NSLog(@"First View did load");
 }
 
@@ -49,7 +50,41 @@
 {
     NSLog(@"First View did appear");
 }
-
+#pragma mark adjust font size according to device
+-(void)adjustFont
+{
+    size_t size;
+    sysctlbyname("hw.machine", NULL, &size, NULL, 0);
+    char *machine = malloc(size);
+    sysctlbyname("hw.machine", machine, &size, NULL, 0);
+    NSString *platform = [NSString stringWithCString:machine encoding:NSUTF8StringEncoding];
+    if([self needSetFontTo18:platform])
+    {
+        NSLog(@"Setting font to 18");
+        for (UILabel *l in self.labels)
+        {
+            [l setFont:[UIFont systemFontOfSize:18.0]];
+        }
+    }
+}
+- (BOOL) needSetFontTo18:(NSString *)platform
+{
+    if ([platform isEqualToString:@"iPhone1,1"] ||
+    [platform isEqualToString:@"iPhone1,2"] ||
+    [platform isEqualToString:@"iPhone2,1"] ||
+    [platform isEqualToString:@"iPhone3,1"] ||
+    [platform isEqualToString:@"iPhone3,3"] ||
+    [platform isEqualToString:@"iPhone4,1"] ||
+    [platform isEqualToString:@"iPhone5,1"] ||
+    [platform isEqualToString:@"iPhone5,2"] ||
+    [platform isEqualToString:@"iPhone5,3"] ||
+    [platform isEqualToString:@"iPhone5,4"] ||
+    [platform isEqualToString:@"iPhone6,1"] ||
+    [platform isEqualToString:@"iPhone6,2"] ||
+    [platform isEqualToString:@"iPhone8,4"])    return YES;
+    
+    return NO;
+}
 #pragma mark FaceBook related
 -(void) validateCurrentFBToken
 {

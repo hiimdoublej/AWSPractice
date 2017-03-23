@@ -13,10 +13,12 @@
 #import <AWSCore/AWSCredentialsProvider.h>
 #import "DynamoDBActions.h"
 #import "RecordsViewController.h"
+#import <sys/sysctl.h>
 
 @interface FirstViewController : UIViewController<AWSIdentityProviderManager,UISearchBarDelegate>
 
 @property (weak, nonatomic) IBOutlet UISearchBar *mySearchBar;
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 
 @end
 

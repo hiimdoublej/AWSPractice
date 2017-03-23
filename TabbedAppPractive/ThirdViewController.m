@@ -18,5 +18,11 @@
     [self presentViewController:fbvc animated:YES completion:^(void){}];
 }
 
+- (IBAction)toCredits:(id)sender {
+    [self performSegueWithIdentifier:@"ToCreditsView" sender:self];
+}
+- (IBAction)toAbout:(id)sender {
+    [self performSegueWithIdentifier:@"ToAboutView" sender:self];
+}
 
 @end
