@@ -8,6 +8,7 @@
 
 #import "FirstViewController.h"
 #import "RecordsNavigationController.h"
+#import "SecondViewController.h"
 
 
 @interface FirstViewController ()
@@ -38,6 +39,7 @@
         [self validateCurrentFBToken];
     }
     [self adjustFont];
+    
     NSLog(@"First View did load");
 }
 
@@ -60,6 +62,7 @@
     NSString *platform = [NSString stringWithCString:machine encoding:NSUTF8StringEncoding];
     if([self needSetFontTo18:platform])
     {
+        //determine if the device screen is too small, need to resize font to fit screen
         NSLog(@"Setting font to 18");
         for (UILabel *l in self.labels)
         {
@@ -199,7 +202,7 @@
                         else
                         {
                             NSLog(@"No records returen for plate : [%@]", targetPlate);
-                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops!" message:@"No previous reports with this plate number, if you had a ride with that cab, feel free to share your experience with others using the middle page !" preferredStyle:UIAlertControllerStyleAlert];
+                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops!" message:@"No previous reports with this plate number, if you had a ride with that cab, feel free to share your experience with others using the middle tab !" preferredStyle:UIAlertControllerStyleAlert];
                             UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
                             [alert addAction:defaultAction];
                             [self presentViewController:alert animated:YES completion:^(void){}];
@@ -253,6 +256,7 @@
     else
     {
     //valid input -> query
+        [DynamoDBActions setIsReporing:NO];//is retrieving data not reporting
         [searchBar resignFirstResponder];//dismiss the keyboard
         [self AWSQuery:modified_text start_from_beginning:YES];
     }

@@ -95,7 +95,7 @@
     }
     rating = [NSNumber numberWithFloat:[rating floatValue] / [self.tableRows count]];
     NSLog(@"Average Rating:%@",rating);
-    self.RatingLabel.text = [NSString stringWithFormat:@"Average Rating:%@",[rating stringValue]];
+    self.RatingLabel.text = [NSString stringWithFormat:@"Average Rating:%.02f",[rating floatValue]];
 }
 
 #pragma mark - View lifecycle

@@ -15,6 +15,7 @@
 
 + (AWSTask *)describeTable;
 + (AWSTask *)createTable;
++ (void)setIsReporing:(BOOL)value;
     
 @end
 

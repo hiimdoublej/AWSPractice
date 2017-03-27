@@ -8,7 +8,9 @@
 
 #import "DynamoDBActions.h"
 
-static NSString *const AWSSampleDynamoDBTableName = @"LittleYellowPageDB0";
+static NSString *const AWSRetrieveDynamoDBTableName = @"LittleYellowPageDB0";
+static NSString *const AWSReportDynamoDBTableName = @"LittleYellowPageDB1";
+static BOOL isReporing = NO;
     
 @implementation DynamoDBActions
     
@@ -18,7 +20,7 @@ static NSString *const AWSSampleDynamoDBTableName = @"LittleYellowPageDB0";
     
     // See if the table exists.
     AWSDynamoDBDescribeTableInput *describeTableInput = [AWSDynamoDBDescribeTableInput new];
-    describeTableInput.tableName = AWSSampleDynamoDBTableName;
+    describeTableInput.tableName = AWSRetrieveDynamoDBTableName;
     return [dynamoDB describeTable:describeTableInput];
 }
     
@@ -27,7 +29,7 @@ static NSString *const AWSSampleDynamoDBTableName = @"LittleYellowPageDB0";
     
     // Create the test table.
     AWSDynamoDBAttributeDefinition *hashKeyAttributeDefinition = [AWSDynamoDBAttributeDefinition new];
-    hashKeyAttributeDefinition.attributeName = @"UserId";
+    hashKeyAttributeDefinition.attributeName = @"DataID ";
     hashKeyAttributeDefinition.attributeType = AWSDynamoDBScalarAttributeTypeS;
     
     AWSDynamoDBKeySchemaElement *hashKeySchemaElement = [AWSDynamoDBKeySchemaElement new];
@@ -83,7 +85,7 @@ static NSString *const AWSSampleDynamoDBTableName = @"LittleYellowPageDB0";
     
     //Create TableInput
     AWSDynamoDBCreateTableInput *createTableInput = [AWSDynamoDBCreateTableInput new];
-    createTableInput.tableName = AWSSampleDynamoDBTableName;
+    createTableInput.tableName = AWSRetrieveDynamoDBTableName;
     createTableInput.attributeDefinitions = @[hashKeyAttributeDefinition, rangeKeyAttributeDefinition, dateAttrDef, rideLocationAttrDef];
     createTableInput.keySchema = @[hashKeySchemaElement, rangeKeySchemaElement];
     createTableInput.provisionedThroughput = provisionedThroughput;
@@ -94,7 +96,7 @@ static NSString *const AWSSampleDynamoDBTableName = @"LittleYellowPageDB0";
             // Wait for up to 4 minutes until the table becomes ACTIVE.
             
             AWSDynamoDBDescribeTableInput *describeTableInput = [AWSDynamoDBDescribeTableInput new];
-            describeTableInput.tableName = AWSSampleDynamoDBTableName;
+            describeTableInput.tableName = AWSRetrieveDynamoDBTableName;
             task = [dynamoDB describeTable:describeTableInput];
             
             for(int32_t i = 0; i < 16; i++) {
@@ -114,13 +116,28 @@ static NSString *const AWSSampleDynamoDBTableName = @"LittleYellowPageDB0";
         return task;
     }];
 }
-    
+
++ (void)setIsReporing:(BOOL)value
+{
+    isReporing = value;
+}
+
 @end
 
 @implementation DDBTableRow
     
 + (NSString *)dynamoDBTableName {
-    return AWSSampleDynamoDBTableName;
+    if(isReporing) return AWSReportDynamoDBTableName;
+    
+    return AWSRetrieveDynamoDBTableName;
+}
+
++ (NSString *)dynamoDBTableName:(BOOL)isReporting {
+    if(isReporting)
+    {
+        return AWSReportDynamoDBTableName;
+    }
+    return AWSRetrieveDynamoDBTableName;
 }
     
 + (NSString *)hashKeyAttribute {

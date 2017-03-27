@@ -20,14 +20,14 @@
 
 @implementation SecondViewController
 #pragma mark view life cycle
+
 - (void)viewDidLoad {
-     self.activityIndicator  =[[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self setupPickerViewData];
+    self.activityIndicator  =[[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     self.commentBoxEditing = NO;
     self.lock = [NSLock new];
     [self setupRatings];
     [self setupCommentTextView];
-    [self setupPickerViewData];
-    NSLog(@"Second View did load.");
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -39,31 +39,12 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    // register for keyboard notifications]
-    
-    //    [[NSNotificationCenter defaultCenter] addObserver:self
-    //                                             selector:@selector(keyboardWillShow)
-    //                                                 name:UIKeyboardWillShowNotification
-    //                                               object:self.commentTextView];
-    //
-    //    [[NSNotificationCenter defaultCenter] addObserver:self
-    //                                             selector:@selector(keyboardWillHide)
-    //                                                 name:UIKeyboardWillHideNotification
-    //                                               object:self.commentTextView];
     [self showElements];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    // unregister for keyboard notifications while not visible.
-    //    [[NSNotificationCenter defaultCenter] removeObserver:self
-    //                                                    name:UIKeyboardWillShowNotification
-    //                                                  object:nil];
-    //
-    //    [[NSNotificationCenter defaultCenter] removeObserver:self
-    //                                                    name:UIKeyboardWillHideNotification
-    //                                                  object:nil];
 }
 #pragma mark rating system
 -(void)setupRatings
@@ -213,6 +194,8 @@
     if([self.lock tryLock])
     {
         NSLog(@"Inserting into dynamodb....");
+        //show network activity indicator
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
         //disable button
         [self.Submit setEnabled:NO];
         [[self.Submit titleLabel]setText:@"Submitting....."];
@@ -314,6 +297,10 @@
             tableRow.RideVehiclePlate = plateInput;
             tableRow.OverallRating = rating;
             tableRow.RideComment = comments;
+            
+            //set dynamodb to report(so that data gets to the wait for approval database)
+            [DynamoDBActions setIsReporing:YES];
+            
             AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
             //default object mapper is the objectmapper with facebook authentication configuration
             return [[[dynamoDBObjectMapper save:tableRow] continueWithExecutor:[AWSExecutor mainThreadExecutor] withSuccessBlock:^id(AWSTask *task)
@@ -330,6 +317,7 @@
                     [self showAlertWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to submit data ! \n Details:%@",task.error]];
                 }
                 [self resetElements];
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
                 return nil;
             }];
             
@@ -464,6 +452,7 @@
     
     [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Nangan",@"Beigan" ,@"Dongyin",@"Juguang",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:18]];
     
+    [self.PickerView reloadAllComponents];
 }
 
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
