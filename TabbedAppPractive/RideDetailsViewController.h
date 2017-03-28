@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "DynamoDBActions.h"
+#import <FBAudienceNetwork/FBAudienceNetwork.h>
 
-@interface RideDetailsViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface RideDetailsViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,FBAdViewDelegate>
 
 @property DDBTableRow *rowToDisplay;
 @property (weak, nonatomic) IBOutlet UITableView *myTableview;

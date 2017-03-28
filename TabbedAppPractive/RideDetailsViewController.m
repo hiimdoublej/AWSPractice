@@ -13,11 +13,62 @@
 @end
 
 @implementation RideDetailsViewController
+#pragma mark fb audience network ad banner
+- (void)initFBAd:(BOOL)isTesting
+{
+// methods to call when testing ad banner
+//    [FBAdSettings setLogLevel:FBAdLogLevelLog];
+//    [FBAdSettings addTestDevice:@"345002dd5ba9e413f6e1c53918a9edc520c857a9"];
+
+//method to call when done testing
+//[FBAdSettings clearTestDevice:@"345002dd5ba9e413f6e1c53918a9edc520c857a9"];
+NSString *placementID =[[NSBundle mainBundle] objectForInfoDictionaryKey:@"FBAudienceNetworkPlacementID"];
+    FBAdView *adView =
+    [[FBAdView alloc] initWithPlacementID:placementID
+                                   adSize:kFBAdSize320x50
+                       rootViewController:self];
+    adView.delegate = self;
+    
+    adView.frame = CGRectMake(0, self.view.frame.size.height-adView.frame.size.height, adView.frame.size.width, adView.frame.size.height);
+    [adView loadAd];
+    [self.view addSubview:adView];
+    
+}
+
+- (void)adView:(FBAdView *)adView didFailWithError:(NSError *)error;
+{
+    NSLog(@"Ad failed to load");
+    // Add code to hide the ad unit...
+    // E.g. adView.hidden = YES;
+}
+
+- (void)adViewDidLoad:(FBAdView *)adView;
+{
+    NSLog(@"Ad was loaded and ready to be displayed");
+    // Add code to show the ad unit...
+    // E.g. adView.hidden = NO;
+}
+
+- (void)adViewDidClick:(FBAdView *)adView
+{
+    NSLog(@"Banner ad was clicked.");
+}
+
+- (void)adViewDidFinishHandlingClick:(FBAdView *)adView
+{
+    NSLog(@"Banner ad did finish click handling.");
+}
+
+- (void)adViewWillLogImpression:(FBAdView *)adView
+{
+    NSLog(@"Banner ad impression is being captured.");
+}
 
 #pragma mark view life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     _myTableview.separatorColor = [UIColor clearColor];
+    [self initFBAd:NO];
     NSLog(@"RideDetailsView did load");
     // Do any additional setup after loading the view.
 }

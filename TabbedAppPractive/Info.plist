@@ -70,6 +70,10 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -84,9 +88,7 @@
 			<false/>
 		</dict>
 	</dict>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-	</array>
+	<key>FBAudienceNetworkPlacementID</key>
+	<string>1381296918578326_1420328814675136</string>
 </dict>
 </plist>

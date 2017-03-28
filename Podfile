@@ -6,9 +6,12 @@ target 'TabbedAppPractive' do
   use_frameworks!
 
   # Pods for TabbedAppPractive
-  pod 'AWSDynamoDB';
-  pod 'FBSDKCoreKit';
-  pod 'FBSDKLoginKit';
-  pod 'FBSDKShareKit';
+  pod 'AWSCore', '~> 2.5.2'
+  pod 'AWSDynamoDB', '~> 2.5.2';
+  pod 'Bolts','~> 1.8.4';
+  pod 'FBSDKCoreKit','~> 4.20.1';
+  pod 'FBSDKLoginKit','~> 4.20.1';
+  pod 'FBSDKShareKit','~> 4.20.1';
+  pod 'FBAudienceNetwork', '~>4.20.1';
 
 end

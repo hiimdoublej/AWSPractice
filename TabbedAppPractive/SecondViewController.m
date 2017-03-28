@@ -10,6 +10,7 @@
 #import "FBLoginView.h"
 #import "DynamoDBActions.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <AWSCore/AWSCognitoIdentityService.h>
 
 #define kOFFSET_FOR_KEYBOARD 380.0
 
@@ -45,6 +46,11 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+
 }
 #pragma mark rating system
 -(void)setupRatings
@@ -189,6 +195,14 @@
     FBLoginView *fbvc = [sb instantiateViewControllerWithIdentifier:@"FBLoginView"];
     [self presentViewController:fbvc animated:YES completion:^(void){}];
 }
+- (IBAction)submitInfo:(UIButton *)sender {
+    [self hideKeyboard];
+    [self AWSPut];
+}
+
+#pragma mark AWS-related
+
+
 - (AWSTask*)AWSPut
 {
     if([self.lock tryLock])
@@ -305,21 +319,21 @@
             //default object mapper is the objectmapper with facebook authentication configuration
             return [[[dynamoDBObjectMapper save:tableRow] continueWithExecutor:[AWSExecutor mainThreadExecutor] withSuccessBlock:^id(AWSTask *task)
                      { return nil;
-             }] continueWithExecutor:[AWSExecutor mainThreadExecutor] withBlock:^id(AWSTask *task)
-            {
-                if(!task.error)
-                {
-                    [self showAlertWithTitle:@"Succeeded" message:@"Successfully submitted data for approval !"];
-                }
-                else
-                {
-                    NSLog(@"Error: [%@]", task.error);
-                    [self showAlertWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to submit data ! \n Details:%@",task.error]];
-                }
-                [self resetElements];
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                return nil;
-            }];
+                     }] continueWithExecutor:[AWSExecutor mainThreadExecutor] withBlock:^id(AWSTask *task)
+                    {
+                        if(!task.error)
+                        {
+                            [self showAlertWithTitle:@"Succeeded" message:@"Successfully submitted data for approval !"];
+                        }
+                        else
+                        {
+                            NSLog(@"Error: [%@]", task.error);
+                            [self showAlertWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to submit data ! \n Details:%@",task.error]];
+                        }
+                        [self resetElements];
+                        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                        return nil;
+                    }];
             
         }else{
             [self showAlertWithTitle:@"Error!" message:@"Unexpected error! Something's wrong badly."];
@@ -328,10 +342,7 @@
     return nil;
 }
 
-- (IBAction)submitInfo:(UIButton *)sender {
-    [self hideKeyboard];
-    [self AWSPut];
-}
+
 
 #pragma mark hide-show elements
 -(void) showElements
