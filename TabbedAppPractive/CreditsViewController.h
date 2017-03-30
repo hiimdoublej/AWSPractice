@@ -11,4 +11,5 @@
 
 @interface CreditsViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UILabel *label0;
 @end
