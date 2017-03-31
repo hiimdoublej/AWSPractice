@@ -1,0 +1,132 @@
+
+/* Class = "UINavigationItem"; title = "About"; ObjectID = "1dg-Ou-uc7"; */
+"1dg-Ou-uc7.title" = "About";
+
+/* Class = "UILabel"; text = "Email:"; ObjectID = "5OF-WT-RGM"; */
+"5OF-WT-RGM.text" = "Email:";
+
+/* Class = "UIViewController"; title = "CreditsView"; ObjectID = "8Qc-xU-ffg"; */
+"8Qc-xU-ffg.title" = "CreditsView";
+
+/* Class = "UIViewController"; title = "Report"; ObjectID = "8rJ-Kc-sve"; */
+"8rJ-Kc-sve.title" = "Report";
+
+/* Class = "UIButton"; normalTitle = "Later"; ObjectID = "9dM-bc-U5o"; */
+"9dM-bc-U5o.normalTitle" = "Later";
+
+/* Class = "UILabel"; text = "Search to find out how people feel !"; ObjectID = "A5M-7J-77L"; */
+"A5M-7J-77L.text" = "Search to find out how people feel !";
+
+/* Class = "UISearchBar"; placeholder = "Search License Plate"; ObjectID = "BwX-Jm-IsR"; */
+"BwX-Jm-IsR.placeholder" = "Search License Plate";
+
+/* Class = "UISearchBar"; BwX-Jm-IsR.scopeButtonTitles[0] = "Title"; ObjectID = "BwX-Jm-IsR"; */
+"BwX-Jm-IsR.scopeButtonTitles[0]" = "Title";
+
+/* Class = "UISearchBar"; BwX-Jm-IsR.scopeButtonTitles[1] = "Title"; ObjectID = "BwX-Jm-IsR"; */
+"BwX-Jm-IsR.scopeButtonTitles[1]" = "Title";
+
+/* Class = "UILabel"; text = "Rate(0-10):"; ObjectID = "DsD-iz-Det"; */
+"DsD-iz-Det.text" = "Rate(0-10):";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "Gte-ck-4Sv"; */
+"Gte-ck-4Sv.text" = "Title";
+
+/* Class = "UILabel"; text = "Any Comments?"; ObjectID = "Ixe-M4-92h"; */
+"Ixe-M4-92h.text" = "Any Comments?";
+
+/* Class = "UILabel"; text = "Some of the codes are "; ObjectID = "NAX-aS-Dsa"; */
+"NAX-aS-Dsa.text" = "Some of the codes are ";
+
+/* Class = "UILabel"; text = "Report icon, Application Icon both made by \"Madebyoliver\" from #<flaticon>flaticon#"; ObjectID = "Na6-i4-ez5"; */
+"Na6-i4-ez5.text" = "Report icon, Application Icon both made by \"Madebyoliver\" from #<flaticon>flaticon#";
+
+/* Class = "UIViewController"; title = "FBLogin"; ObjectID = "O31-Yd-n6J"; */
+"O31-Yd-n6J.title" = "FBLogin";
+
+/* Class = "UILabel"; text = "Detail"; ObjectID = "STk-bh-kzH"; */
+"STk-bh-kzH.text" = "Detail";
+
+/* Class = "UIButton"; normalTitle = "Login"; ObjectID = "Ugn-cF-qet"; */
+"Ugn-cF-qet.normalTitle" = "Login";
+
+/* Class = "UILabel"; text = "Detail"; ObjectID = "WTy-Fb-D67"; */
+"WTy-Fb-D67.text" = "Detail";
+
+/* Class = "UILabel"; text = "Plate Number:"; ObjectID = "YAe-WH-gmU"; */
+"YAe-WH-gmU.text" = "Plate Number:";
+
+/* Class = "UILabel"; text = "Database and login identity management provide by "; ObjectID = "auQ-Ll-QfS"; */
+"auQ-Ll-QfS.text" = "Database and login identity management provide by ";
+
+/* Class = "UILabel"; text = "AverageRatingHere"; ObjectID = "bXf-yR-4gQ"; */
+"bXf-yR-4gQ.text" = "AverageRatingHere";
+
+/* Class = "UITabBarItem"; title = "Report"; ObjectID = "cPa-gy-q4n"; */
+"cPa-gy-q4n.title" = "Report";
+
+/* Class = "UIViewController"; title = "RecordsView"; ObjectID = "eTe-tQ-v6d"; */
+"eTe-tQ-v6d.title" = "RecordsView";
+
+/* Class = "UIButton"; normalTitle = "flaticon."; ObjectID = "exd-NO-3eO"; */
+"exd-NO-3eO.normalTitle" = "flaticon.";
+
+/* Class = "UINavigationItem"; title = "Credits"; ObjectID = "fq6-cR-eUR"; */
+"fq6-cR-eUR.title" = "Credits";
+
+/* Class = "UIButton"; normalTitle = "Credits"; ObjectID = "gJk-5d-ddG"; */
+"gJk-5d-ddG.normalTitle" = "Credits";
+
+/* Class = "UILabel"; text = "Report icon, Application Icon both made by \"Madebyoliver\" from "; ObjectID = "gyB-dD-YSq"; */
+"gyB-dD-YSq.text" = "Report icon, Application Icon both made by \"Madebyoliver\" from ";
+
+/* Class = "UILabel"; text = "Your text here..."; ObjectID = "hwm-dA-bww"; */
+"hwm-dA-bww.text" = "Your text here...";
+
+/* Class = "UILabel"; text = "Had a bad ride ? "; ObjectID = "in1-hk-8ev"; */
+"in1-hk-8ev.text" = "Had a bad ride ? ";
+
+/* Class = "UIButton"; normalTitle = "About this app"; ObjectID = "j62-7W-BJI"; */
+"j62-7W-BJI.normalTitle" = "About this app";
+
+/* Class = "UITextField"; placeholder = "ex:123-ABC"; ObjectID = "jCm-Uw-bYG"; */
+"jCm-Uw-bYG.placeholder" = "ex:123-ABC";
+
+/* Class = "UILabel"; text = "Author:hiimdoublej"; ObjectID = "l8k-Sx-wPw"; */
+"l8k-Sx-wPw.text" = "Author:hiimdoublej";
+
+/* Class = "UIButton"; normalTitle = "410221009@gms.ndhu.edu.tw"; ObjectID = "rJM-CQ-GRk"; */
+"rJM-CQ-GRk.normalTitle" = "410221009@gms.ndhu.edu.tw";
+
+/* Class = "UILabel"; text = "Value"; ObjectID = "s35-Vq-gL9"; */
+"s35-Vq-gL9.text" = "Value";
+
+/* Class = "UILabel"; text = "Where was the ride ?"; ObjectID = "t8X-vN-ai0"; */
+"t8X-vN-ai0.text" = "Where was the ride ?";
+
+/* Class = "UIButton"; normalTitle = "Submit"; ObjectID = "tNV-JP-gNQ"; */
+"tNV-JP-gNQ.normalTitle" = "Submit";
+
+/* Class = "UIViewController"; title = "AboutView"; ObjectID = "trh-Nd-4hM"; */
+"trh-Nd-4hM.title" = "AboutView";
+
+/* Class = "UIButton"; normalTitle = "here."; ObjectID = "ttJ-G2-YN8"; */
+"ttJ-G2-YN8.normalTitle" = "here.";
+
+/* Class = "UIViewController"; title = "Details"; ObjectID = "uGm-JA-bIh"; */
+"uGm-JA-bIh.title" = "Details";
+
+/* Class = "UILabel"; text = "PlateNumberHere"; ObjectID = "vFb-TL-RYX"; */
+"vFb-TL-RYX.text" = "PlateNumberHere";
+
+/* Class = "UIViewController"; title = "Third"; ObjectID = "x50-0B-3qT"; */
+"x50-0B-3qT.title" = "Third";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "yEb-B8-xqc"; */
+"yEb-B8-xqc.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "zsv-nj-BwO"; */
+"zsv-nj-BwO.text" = "Title";
+
+/* Class = "UIButton"; normalTitle = "Amazon Web Services."; ObjectID = "zsw-hF-Tob"; */
+"zsw-hF-Tob.normalTitle" = "Amazon Web Services.";
