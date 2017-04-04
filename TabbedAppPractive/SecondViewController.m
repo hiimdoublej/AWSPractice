@@ -23,7 +23,7 @@
 #pragma mark view life cycle
 
 - (void)viewDidLoad {
-    [self setupPickerViewData];
+    [self setupPickerViewData2];
     self.activityIndicator  =[[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     self.commentBoxEditing = NO;
     self.lock = [NSLock new];
@@ -254,6 +254,7 @@
         //get current time from user
         NSDate *now = [NSDate date];
         NSDateFormatter *nsfNow = [NSDateFormatter new];
+        [nsfNow setLocale:[NSLocale localeWithLocaleIdentifier:@"en"]];
         [nsfNow setTimeStyle:NSDateFormatterMediumStyle];
         [nsfNow setDateStyle:NSDateFormatterMediumStyle];
         [nsfNow setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT+8"]];
@@ -420,13 +421,18 @@
 {
     if(component == 0)
     {
-        return [self.topLevelAdministrativeDivisions objectAtIndex:row];
+        NSString *res = NSLocalizedString([self.topLevelAdministrativeDivisions objectAtIndex:row],@"localize string for chinese (ch-Hant)");
+        return res;
     }
     else
     {
         NSArray *result = [self.secondLevelAdministratiiveDivisions objectForKey:[self.topLevelAdministrativeDivisions objectAtIndex:[pickerView selectedRowInComponent:0]]];
         if(row > result.count) return nil;//preventing a bug where you select a deep row first then switch to another division without a row at that deep of a position
-        return [result objectAtIndex:row];
+//        return [result objectAtIndex:row];
+        
+        //edited
+        NSString *res = NSLocalizedString([result objectAtIndex:row],@"localize string for chinese(zh-Hant)");
+        return res;
     }
     
 }
@@ -513,6 +519,76 @@
     
     [self.PickerView reloadAllComponents];
 }
+
+-(void)setupPickerViewData2
+{
+        //setup top level
+        self.topLevelAdministrativeDivisions = [[NSMutableArray alloc]init];
+        [self.topLevelAdministrativeDivisions addObject:@"Taipei"];
+        [self.topLevelAdministrativeDivisions addObject:@"NewTaipei"];
+        [self.topLevelAdministrativeDivisions addObject:@"Taichung"];
+        [self.topLevelAdministrativeDivisions addObject:@"Kaohsiung"];
+        [self.topLevelAdministrativeDivisions addObject:@"Taoyuan City"];
+        [self.topLevelAdministrativeDivisions addObject:@"Keelung"];
+        [self.topLevelAdministrativeDivisions addObject:@"Tainan"];
+        [self.topLevelAdministrativeDivisions addObject:@"Changhua"];
+        [self.topLevelAdministrativeDivisions addObject:@"PingTung"];
+        [self.topLevelAdministrativeDivisions addObject:@"Yunlin"];
+        [self.topLevelAdministrativeDivisions addObject:@"Miaoli"];
+        [self.topLevelAdministrativeDivisions addObject:@"Hsinchu"];
+        [self.topLevelAdministrativeDivisions addObject:@"Chiayi"];
+        [self.topLevelAdministrativeDivisions addObject:@"Nantou"];
+        [self.topLevelAdministrativeDivisions addObject:@"Yilan"];
+        [self.topLevelAdministrativeDivisions addObject:@"Hualien"];
+        [self.topLevelAdministrativeDivisions addObject:@"Taitung"];
+        [self.topLevelAdministrativeDivisions addObject:@"Kinmen"];
+        [self.topLevelAdministrativeDivisions addObject:@"Penghu"];
+        [self.topLevelAdministrativeDivisions addObject:@"Lienchiang"];
+        
+        
+        //set second level locations
+        self.secondLevelAdministratiiveDivisions = [[NSMutableDictionary alloc]init];
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Songshan",@"XinYi",@"Da-An",@"Zhongshan",@"Zhongzheng",@"DaTong",@"Wanhua",@"Nangang",@"Neihu",@"Shilin",@"Beitou", nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:0]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Banqiao",@"Zhonghe",@"Xinzhuang",@"Sanchong",@"Xindian",@"Tucheng",@"Yonghe",@"Luzhou",@"Xizhi",@"Shulin",@"Tamsui",@"Sanxia",@"Linkou",@"Yingge",@"Wugu",@"Taishan",@"Ruifang",@"Bali",@"Shenkeng",@"Sanzhi",@"Wanli",@"Jinshan",@"Gongliao",@"Shimen",@"Shiding",@"Pinglin",@"Wulai",@"Pingxi", nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:1]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Beitun",@"Central",@"East",@"Nantun",@"North",@"South",@"West",@"Xitun",@"Dali",@"Taiping",@"Wufeng",@"Wuri",@"Fengyuan",@"Dongshi",@"Daya",@"Heping",@"Houli",@"Shengang",@"Shigang",@"Tanzi",@"Xinshe",@"Dajia",@"Qingshui",@"Shalu",@"Wuqi",@"Da-An",@"Dadu",@"Longjing",@"Waipu", nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:2]];
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Fengshan",@"Sanmin",@"Zuoying",@"Qianzhen",@"Nanzi",@"Lingya",@"Xiaogang",@"Gushan",@"Daliao",@"Gangshan",@"Renwu",@"Linyuan",@"Luzhu",@"Xinxing",@"Niaosong",@"Dashu",@"Meinong",@"Qishan",@"Qiaotou",@"Ziguan",@"Dashe",@"Qieding",@"Yanchao",@"Hunei",@"Alian",@"Qijin",@"Yancheng",@"Mituo",@"Neimen",@"Yong-An",@"Liugui",@"Shanlin",@"Tianliao",@"Jiaxian",@"Taoyuan",@"Namaxia",@"Maolin", nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:3]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"TaoYuan",@"Zhongli",@"Pingzhen",@"Bade",@"Yangmei",@"Luzhu",@"Guishan",@"Longtan",@"Daxi",@"Dayuan",@"Guanyin",@"Xinwu",@"Fuxing", nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:4]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Anle",@"Nuannuan",@"Qidu",@"Ren-Ai",@"XinYi",@"Zhongshan",@"Zhongzheng",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:5]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Anding", @"Annan", @"Anping", @"Baihe", @"Beimen", @"Danei",@"Dongshan",@"East",@"Guanmiao",@"Guantian",@"Guiren", @"Houbi",@"Jiali",@"Jiangjun",@"Liujia",@"Liuying",@"Longqi",@"Madou",@"Nanhua",@"Nanxi",@"North", @"Qigu",@"Rende",@"Shanhua",@"Shanshang",@"South",@"WestCentral",@"Xiaying",@"Xigang",@"Xinhua",@"Xinshi",@"Xinying",@"Xuejia",@"Yanshui",@"Yongkang",@"Yujing",@"Zuozhen", nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:6]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"ChangHua",@"Yuanlin",@"Beidou",@"Erlin",@"Hemei",@"Lukang",@"Tianzhong",@"XiHu",@"Dacheng",@"Dacun",@"Ershui",@"Fangyuan",@"Fenyuan",@"Fuxing",@"Huatan",@"Pitou",@"Puxin",@"Puyan",@"Shengang",@"Shetou",@"Tianwei",@"Xianxi",@"Xiushui",@"Xizhou",@"Yongjing",@"Zhutang",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:7]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Pingtung",@"Chaozhou",@"Donggang",@"Hengchun",@"Changzhi",@"Checheng",@"Fangliao",@"Fangshan",@"Gaoshu",@"Jiadong",@"Jiuru",@"Kanding",@"Ligang",@"Linbian",@"Linluo",@"Liuqiu",@"Manzhou",@"Nanzhou",@"Neipu",@"Wandan",@"Wanluan",@"Xinpi",@"Xinyuan",@"Yanpu",@"Zhutian",@"Chunri",@"Laiyi",@"Majia",@"Mudan",@"Sandimen",@"Shizi",@"Taiwu",@"Wutai",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:8]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Douliu",@"Beigang",@"Dounan",@"Huwei",@"Tuku",@"Xiluo",@"Baozhong",@"Citong",@"Dapi",@"Dongshi",@"Erlun",@"Gukeng",@"Kouhu",@"Linnei",@"Lunbei",@"Mailiao",@"Shuilin",@"Sihu",@"Taixi",@"Yuanchang",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:9]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Miaoli City",@"Toufen",@"Houlong",@"Tongxiao",@"Yuanli",@"Zhunan",@"Zhuolan",@"Dahu",@"Gongguan",@"Nanzhuang",@"Sanwan",@"Sanyi",@"Shitan",@"Tongluo",@"Touwu",@"Xihu",@"Zaoqiao",@"Tai’an",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:10]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Zhubei",@"Hukou", @"Xinfeng",@"Xinpu",@"Zhudong",@"Baoshan",@"Beipu",@"Emei",@"Guanxi",@"Hengshan",@"Qionglin",@"Jianshi",@"Wufeng",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:11]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Puzi",@"Taibao",@"Budai",@"Dalin",@"Dapu",@"Dongshi",@"Fanlu",@"Liujiao",@"Lucao",@"Meishan",@"Minxiong",@"Shuishang",@"Xikou",@"Xingang",@"Yizhu",@"Zhongpu",@"Zhuqi",@"Alishan",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:12]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Nantou",@"Caotun",@"Jiji",@"Puli",@"Zhushan",@"Guoxing",@"Lugu",@"Mingjian",@"Shuili",@"Yuchi",@"Zhongliao",@"RenAi",@"Xinyi",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:13]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Yilan",@"Luodong",@"Su'ao",@"Toucheng",@"Dongshan",@"Jiaoxi",@"Sanxing",@"Wujie",@"Yuanshan",@"Zhuangwei",@"Datong",@"NanAo",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:14]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Hualien",@"Fenglin",@"Yuli",@"Fengbin",@"Fuli",@"Guangfu",@"JiAn",@"Ruisui" ,@"Shoufeng",@"Xincheng",@"Wanrong",@"Xiulin",@"Zhuoxi",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:15]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Taitung",@"Chenggong",@"Guanshan",@"Beinan",@"Changbin",@"Chishang",@"Dawu",@"Donghe",@"Luye",@"Lüdao",@"Taimali",@"Daren",@"Haiduan" ,@"Jinfeng",@"Lanyu",@"Yanping",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:16]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Jincheng",@"Jinhu",@"Jinsha",@"Jinning",@"Lieyu",@"Wuqiu",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:17]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Magong",@"Baisha",@"Huxi",@"Qimei",@"Xiyu",@"WangAn",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:18]];
+        
+        [self.secondLevelAdministratiiveDivisions setObject:[[NSArray alloc]initWithObjects:@"Nangan",@"Beigan" ,@"Dongyin",@"Juguang",nil] forKey:[self.topLevelAdministrativeDivisions objectAtIndex:19]];
+        
+        [self.PickerView reloadAllComponents];
+    }
 
 
 @end

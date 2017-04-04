@@ -236,7 +236,9 @@
     //check the input into the search bar
     BOOL inputIsValid = NO;
     NSError *error = NULL;
-    NSString *modified_text = searchBar.text.uppercaseString;
+    //get rid of spaces and return uppercase string since there all plate numbers are uppercase
+    NSString *modified_text = [searchBar.text.uppercaseString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
     if(modified_text.length<9 && modified_text.length>6)
     {//check using regular expression
         NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:
