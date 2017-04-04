@@ -396,6 +396,10 @@
 "Longtan"="龍潭區";
 "Guishan"="龜山區";
 
-//other labels
+//details view labels
 "Average Rating:"="平均得分:";
 "Rating:"="評分:";
+"Date:"="日期:";
+"Location:"="地點:";
+"Overall Rating:"="整體評分:";
+"Comment:"="備註:";

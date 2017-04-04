@@ -86,21 +86,21 @@
     DDBTableRow *item = _rowToDisplay;
     switch (indexPath.row) {
         case 0:
-            cell.textLabel.text = @"Date:";
+            cell.textLabel.text = NSLocalizedString(@"Date:",@"Date in details view");
             //cell.detailTextLabel.text = item.RideTime;
             cell.detailTextLabel.text = [self localizeTime:item.RideTime];
             break;
         case 1:
-            cell.textLabel.text = @"Location:";
+            cell.textLabel.text = NSLocalizedString(@"Location:",@"Location in details view");
             //cell.detailTextLabel.text = item.RideLocation;
             cell.detailTextLabel.text = [self localizeLocation:item.RideLocation];
             break;
         case 2:
-            cell.textLabel.text = @"Overall Rating:";
+            cell.textLabel.text = NSLocalizedString(@"Overall Rating:",@"Ovr rating in details view");
             cell.detailTextLabel.text = [item.OverallRating stringValue];
             break;
         case 3:
-            cell.textLabel.text = @"Comment:";
+            cell.textLabel.text = NSLocalizedString(@"Comment:",@"Comment in details view");
             [cell.detailTextLabel setNumberOfLines:0];
             cell.detailTextLabel.text = item.RideComment;
 //            cell.detailTextLabel.text = @"this is just the sample example of how to calculate the dynamic height for tableview cell which is of around 7 to 8 lines. you will need to set the height of this string first, not seems to be calculated in cellForRowAtIndexPath method.";
