@@ -9,16 +9,16 @@
 "8Qc-xU-ffg.title" = "CreditsView";
 
 /* Class = "UIViewController"; title = "Report"; ObjectID = "8rJ-Kc-sve"; */
-"8rJ-Kc-sve.title" = "Report";
+"8rJ-Kc-sve.title" = "回報";
 
 /* Class = "UIButton"; normalTitle = "Later"; ObjectID = "9dM-bc-U5o"; */
-"9dM-bc-U5o.normalTitle" = "Later";
+"9dM-bc-U5o.normalTitle" = "稍後再說";
 
 /* Class = "UILabel"; text = "Search to find out how people feel !"; ObjectID = "A5M-7J-77L"; */
-"A5M-7J-77L.text" = "Search to find out how people feel !";
+"A5M-7J-77L.text" = "來看看別人怎麼說吧！";
 
 /* Class = "UISearchBar"; placeholder = "Search License Plate"; ObjectID = "BwX-Jm-IsR"; */
-"BwX-Jm-IsR.placeholder" = "Search License Plate";
+"BwX-Jm-IsR.placeholder" = "搜尋車牌號碼";
 
 /* Class = "UISearchBar"; BwX-Jm-IsR.scopeButtonTitles[0] = "Title"; ObjectID = "BwX-Jm-IsR"; */
 "BwX-Jm-IsR.scopeButtonTitles[0]" = "Title";
@@ -27,13 +27,13 @@
 "BwX-Jm-IsR.scopeButtonTitles[1]" = "Title";
 
 /* Class = "UILabel"; text = "Rate(0-10):"; ObjectID = "DsD-iz-Det"; */
-"DsD-iz-Det.text" = "Rate(0-10):";
+"DsD-iz-Det.text" = "評分(0-10):";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "Gte-ck-4Sv"; */
 "Gte-ck-4Sv.text" = "Title";
 
 /* Class = "UILabel"; text = "Any Comments?"; ObjectID = "Ixe-M4-92h"; */
-"Ixe-M4-92h.text" = "Any Comments?";
+"Ixe-M4-92h.text" = "附註：";
 
 /* Class = "UILabel"; text = "Some of the codes are "; ObjectID = "NAX-aS-Dsa"; */
 "NAX-aS-Dsa.text" = "Some of the codes are ";
@@ -48,13 +48,13 @@
 "STk-bh-kzH.text" = "Detail";
 
 /* Class = "UIButton"; normalTitle = "Login"; ObjectID = "Ugn-cF-qet"; */
-"Ugn-cF-qet.normalTitle" = "Login";
+"Ugn-cF-qet.normalTitle" = "登入";
 
 /* Class = "UILabel"; text = "Detail"; ObjectID = "WTy-Fb-D67"; */
 "WTy-Fb-D67.text" = "Detail";
 
 /* Class = "UILabel"; text = "Plate Number:"; ObjectID = "YAe-WH-gmU"; */
-"YAe-WH-gmU.text" = "Plate Number:";
+"YAe-WH-gmU.text" = "車牌號碼:";
 
 /* Class = "UILabel"; text = "Database and login identity management provide by "; ObjectID = "auQ-Ll-QfS"; */
 "auQ-Ll-QfS.text" = "Database and login identity management provide by ";
@@ -63,7 +63,7 @@
 "bXf-yR-4gQ.text" = "AverageRatingHere";
 
 /* Class = "UITabBarItem"; title = "Report"; ObjectID = "cPa-gy-q4n"; */
-"cPa-gy-q4n.title" = "Report";
+"cPa-gy-q4n.title" = "回報";
 
 /* Class = "UIViewController"; title = "RecordsView"; ObjectID = "eTe-tQ-v6d"; */
 "eTe-tQ-v6d.title" = "RecordsView";
@@ -72,22 +72,22 @@
 "exd-NO-3eO.normalTitle" = "flaticon.";
 
 /* Class = "UINavigationItem"; title = "Credits"; ObjectID = "fq6-cR-eUR"; */
-"fq6-cR-eUR.title" = "Credits";
+"fq6-cR-eUR.title" = "著作權聲明";
 
 /* Class = "UIButton"; normalTitle = "Credits"; ObjectID = "gJk-5d-ddG"; */
-"gJk-5d-ddG.normalTitle" = "Credits";
+"gJk-5d-ddG.normalTitle" = "著作權聲明";
 
 /* Class = "UILabel"; text = "Report icon, Application Icon both made by \"Madebyoliver\" from "; ObjectID = "gyB-dD-YSq"; */
 "gyB-dD-YSq.text" = "Report icon, Application Icon both made by \"Madebyoliver\" from ";
 
 /* Class = "UILabel"; text = "Your text here..."; ObjectID = "hwm-dA-bww"; */
-"hwm-dA-bww.text" = "Your text here...";
+"hwm-dA-bww.text" = "說些什麼吧！";
 
 /* Class = "UILabel"; text = "Had a bad ride ? "; ObjectID = "in1-hk-8ev"; */
-"in1-hk-8ev.text" = "Had a bad ride ? ";
+"in1-hk-8ev.text" = "被計程車雷到了嗎？";
 
 /* Class = "UIButton"; normalTitle = "About this app"; ObjectID = "j62-7W-BJI"; */
-"j62-7W-BJI.normalTitle" = "About this app";
+"j62-7W-BJI.normalTitle" = "關於此程式";
 
 /* Class = "UITextField"; placeholder = "ex:123-ABC"; ObjectID = "jCm-Uw-bYG"; */
 "jCm-Uw-bYG.placeholder" = "ex:123-ABC";
@@ -102,10 +102,10 @@
 "s35-Vq-gL9.text" = "Value";
 
 /* Class = "UILabel"; text = "Where was the ride ?"; ObjectID = "t8X-vN-ai0"; */
-"t8X-vN-ai0.text" = "Where was the ride ?";
+"t8X-vN-ai0.text" = "乘車地點";
 
 /* Class = "UIButton"; normalTitle = "Submit"; ObjectID = "tNV-JP-gNQ"; */
-"tNV-JP-gNQ.normalTitle" = "Submit";
+"tNV-JP-gNQ.normalTitle" = "送出";
 
 /* Class = "UIViewController"; title = "AboutView"; ObjectID = "trh-Nd-4hM"; */
 "trh-Nd-4hM.title" = "AboutView";
@@ -130,3 +130,8 @@
 
 /* Class = "UIButton"; normalTitle = "Amazon Web Services."; ObjectID = "zsw-hF-Tob"; */
 "zsw-hF-Tob.normalTitle" = "Amazon Web Services.";
+
+"GaW-3e-h3j.text" = "乘車時間";
+
+"eQA-oE-1F9.text" = "登入/登出";
+

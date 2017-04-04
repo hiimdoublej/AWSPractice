@@ -6,6 +6,7 @@
   Copyright © 2017 hiimdoublej. All rights reserved.
 */
 
+//*Locations
 "Qidu"="七堵區";
 "Qimei"="七美鄉";
 "Qigu"="七股區";
@@ -395,3 +396,6 @@
 "Longtan"="龍潭區";
 "Guishan"="龜山區";
 
+//other labels
+"Average Rating:"="平均得分:";
+"Rating:"="評分:";

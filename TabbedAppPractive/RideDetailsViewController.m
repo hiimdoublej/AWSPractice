@@ -88,7 +88,7 @@
         case 0:
             cell.textLabel.text = @"Date:";
             //cell.detailTextLabel.text = item.RideTime;
-            cell.textLabel.text = [self localizeTime:item.RideTime];
+            cell.detailTextLabel.text = [self localizeTime:item.RideTime];
             break;
         case 1:
             cell.textLabel.text = @"Location:";

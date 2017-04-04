@@ -38,7 +38,9 @@
     
     DDBTableRow *item = self.tableRows[indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@",item.RideTime];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"Rating:%@",item.OverallRating];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@",
+                                    NSLocalizedString(@"Rating:", @"Rating"),
+                                                            item.OverallRating];
     
     return cell;
 }
@@ -95,7 +97,9 @@
     }
     rating = [NSNumber numberWithFloat:[rating floatValue] / [self.tableRows count]];
     NSLog(@"Average Rating:%@",rating);
-    self.RatingLabel.text = [NSString stringWithFormat:@"Average Rating:%.02f",[rating floatValue]];
+    self.RatingLabel.text = [NSString stringWithFormat:@"%@%.02f",
+                                                        NSLocalizedString(@"Average Rating:", @"To display average rating associated with this plate number"),
+                                                        [rating floatValue]];
 }
 
 #pragma mark - View lifecycle
