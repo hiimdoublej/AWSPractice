@@ -13,6 +13,7 @@ target 'TabbedAppPractive' do
   pod 'FBSDKLoginKit','~> 4.20.1';
   pod 'FBSDKShareKit','~> 4.20.1';
   pod 'FBAudienceNetwork','~>4.20.1';
-  pod 'TTTAttributedLabel'
+  pod 'TTTAttributedLabel';
+  pod 'AGi18n';
 
 end

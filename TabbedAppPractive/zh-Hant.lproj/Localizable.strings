@@ -404,3 +404,16 @@
 "Location:"="地點:";
 "Overall Rating:"="整體評分:";
 "Comment:"="備註:";
+
+//about view labels
+"Some of the codes are #<github>here#." = "大部分的原始碼在#<github>這裡#";
+"You can contact me via #<email>email#." = "可以透過#<email>電子信箱#聯絡我";
+
+//report view
+"Succeeded" = "成功";
+"Successfully submitted data for approval !" = "成功送出資料,審查通過後便會上傳至資料庫！";
+"Plate number length incorrect, please check your input !" = "車牌號碼長度不正確,請重新檢查輸入";
+"Please check your input again." = "請重新檢查輸入";
+
+//others
+"Open Link in Safari" = "使用Safari打開";
