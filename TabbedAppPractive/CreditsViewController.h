@@ -12,4 +12,6 @@
 @interface CreditsViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UILabel *label0;
+@property (weak, nonatomic) IBOutlet UIView *flaticonView;
+
 @end

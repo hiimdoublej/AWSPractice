@@ -26,7 +26,7 @@
     [super viewDidLoad];
     self.myFBLoginButton.readPermissions = @[@"public_profile",@"email"];
     [self.myFBLoginButton setDelegate:self];
-    
+    self.myFBLoginButton.titleLabel.text = @"WOOHOO";
     //    FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc]init];
     //    [loginButton setDelegate:self];
     //    loginButton.center = self.view.center;

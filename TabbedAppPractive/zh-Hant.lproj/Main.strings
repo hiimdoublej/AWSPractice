@@ -102,7 +102,7 @@
 "s35-Vq-gL9.text" = "Value";
 
 /* Class = "UILabel"; text = "Where was the ride ?"; ObjectID = "t8X-vN-ai0"; */
-"t8X-vN-ai0.text" = "乘車地點";
+"t8X-vN-ai0.text" = "乘車地點:";
 
 /* Class = "UIButton"; normalTitle = "Submit"; ObjectID = "tNV-JP-gNQ"; */
 "tNV-JP-gNQ.normalTitle" = "送出";
@@ -131,7 +131,10 @@
 /* Class = "UIButton"; normalTitle = "Amazon Web Services."; ObjectID = "zsw-hF-Tob"; */
 "zsw-hF-Tob.normalTitle" = "Amazon Web Services.";
 
-"GaW-3e-h3j.text" = "乘車時間";
+"GaW-3e-h3j.text" = "乘車時間:";
 
 "eQA-oE-1F9.normalTitle" = "臉書登入管理";
 
+"NDk-cv-Gan.text" = "想回報嗎？ \n 登入之後就可以囉！";
+
+"Ugn-cF-qet.normalTitle" = "點我登入"; 

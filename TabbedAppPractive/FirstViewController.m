@@ -188,7 +188,7 @@
                     if(task.error)
                     {
                         NSLog(@"AWS Error: [%@]", task.error);
-                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"Error retrieving data from server. Please try again in a moment." preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error",@"Error") message:NSLocalizedString(@"Error retrieving data from server. Please try again in a moment.",@"error msg") preferredStyle:UIAlertControllerStyleAlert];
                         UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
                         [alert addAction:defaultAction];
                         [self presentViewController:alert animated:YES completion:^(void){}];
@@ -202,7 +202,7 @@
                         else
                         {
                             NSLog(@"No records returen for plate : [%@]", targetPlate);
-                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops!" message:@"No previous reports with this plate number, if you had a ride with that cab, feel free to share your experience with others using the middle tab !" preferredStyle:UIAlertControllerStyleAlert];
+                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops!" message:NSLocalizedString(@"No previous reports with this plate number, if you had a ride with that cab, feel free to share your experience with others using the report tab !",@"error msg") preferredStyle:UIAlertControllerStyleAlert];
                             UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
                             [alert addAction:defaultAction];
                             [self presentViewController:alert animated:YES completion:^(void){}];
@@ -230,7 +230,7 @@
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     //setup alert first
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Invalid input" message:@"Please check your input again." preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Invalid input",@"invalid input") message:NSLocalizedString(@"Please check your input again.",@"error msg") preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
     [alert addAction:defaultAction];
     //check the input into the search bar
