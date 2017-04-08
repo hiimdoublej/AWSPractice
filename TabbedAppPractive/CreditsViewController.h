@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <TTTAttributedLabel/TTTAttributedLabel.h>
+
+@interface CreditsViewController : UIViewController<TTTAttributedLabelDelegate>
+
+@property (strong, nonatomic) IBOutlet TTTAttributedLabel *flaticonLabel;
+@property (strong, nonatomic) IBOutlet TTTAttributedLabel *AWSLabel;
 
 
-@interface CreditsViewController : UIViewController
-
-@property (weak, nonatomic) IBOutlet UILabel *label0;
-@property (weak, nonatomic) IBOutlet UIView *flaticonView;
 
 @end

@@ -15,10 +15,15 @@
 
 @implementation CreditsViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self buildAgreeTextViewFromLabel:self.label0];
-
+    NSString *flaticonString = NSLocalizedString(@"Report icon, application icon both made by \"Madebyoliver\" from #<flaticon>flaticon#.",@"Credits View");
+    NSString *AWSString = NSLocalizedString(@"Database and login identity management provide by #<AWS>Amazon Web Services#.",@"Credits View");
+    
+    [self configureTTTLabel:_flaticonLabel withLocalizedString:flaticonString];
+    [self configureTTTLabel:_AWSLabel withLocalizedString:AWSString];
+    
     NSLog(@"CreditsViewDidLoad");
     // Do any additional setup after loading the view.
 }
@@ -33,123 +38,75 @@
 }
 
 - (IBAction)toAWS:(id)sender {
-[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://aws.amazon.com/"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://aws.amazon.com/"]];
 }
 
 - (IBAction)isDone:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^(void){}];
 }
 
-- (void)buildAgreeTextViewFromLabel:(UILabel *)inputLabel
+-(void)configureTTTLabel:(TTTAttributedLabel*)TTTlabel withLocalizedString:(NSString*)localizedString
 {
-    NSString *localizedString = @"Database and login identity management provided by #<ts>terms of service# and #<pp>privacy policy#";
-    // 1. Split the localized string on the # sign:
-    NSArray *localizedStringPieces = [localizedString componentsSeparatedByString:@"#"];
+    NSString *targetPrefix;
+    NSString *targetLink;
     
-    // 2. Loop through all the pieces:
-    NSUInteger msgChunkCount = localizedStringPieces ? localizedStringPieces.count : 0;
-    CGPoint wordLocation = CGPointMake(0.0, 0.0);
-    for (NSUInteger i = 0; i < msgChunkCount; i++)
+    //check string type(aws or flaticon)
+    if([localizedString rangeOfString:@"#<AWS>"].location != NSNotFound)
     {
-        NSString *chunk = [localizedStringPieces objectAtIndex:i];
-        if ([chunk isEqualToString:@""])
+        targetPrefix = @"<AWS>";
+        targetLink = @"https://aws.amazon.com";
+    }
+    else if ([localizedString rangeOfString:@"#<flaticon>"].location != NSNotFound)
+    {
+        targetPrefix = @"<flaticon>";
+        targetLink = @"http://www.flaticon.com/authors/madebyoliver";
+    }
+    
+    TTTlabel.delegate = self;
+    NSArray *localizedStringPieces = [localizedString componentsSeparatedByString:@"#"];
+    NSUInteger firstHashTagLoc = 0;
+    NSUInteger secondHashTagLoc = 0;
+    NSString *str = @"";
+    
+    for (NSString *s in localizedStringPieces)
+    {
+        if ([s isEqualToString:@""])
         {
-            continue;     // skip this loop if the chunk is empty
+            continue;//skip loop if empty
         }
-        
-        // 3. Determine what type of word this is:
-        BOOL isTermsOfServiceLink = [chunk hasPrefix:@"<ts>"];
-        BOOL isPrivacyPolicyLink  = [chunk hasPrefix:@"<pp>"];
-        BOOL isLink = (BOOL)(isTermsOfServiceLink || isPrivacyPolicyLink);
-        
-        // 4. Create label, styling dependent on whether it's a link:
-        UILabel *label = [[UILabel alloc] init];
-        label.font = [UIFont systemFontOfSize:20.0f];
-        label.text = chunk;
-        label.userInteractionEnabled = isLink;
-        
-        if (isLink)
+        if([s hasPrefix:targetPrefix])
         {
-            label.textColor = self.view.tintColor;
-            label.highlightedTextColor = [UIColor yellowColor];
-            
-            // 5. Set tap gesture for this clickable text:
-            SEL selectorAction = isTermsOfServiceLink ? @selector(tapOnTermsOfServiceLink:) : @selector(tapOnPrivacyPolicyLink:);
-            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                         action:selectorAction];
-            [label addGestureRecognizer:tapGesture];
-            
-            // Trim the markup characters from the label:
-            if (isTermsOfServiceLink)
-                label.text = [label.text stringByReplacingOccurrencesOfString:@"<ts>" withString:@""];
-            if (isPrivacyPolicyLink)
-                label.text = [label.text stringByReplacingOccurrencesOfString:@"<pp>" withString:@""];
+            firstHashTagLoc = [str length];
+            NSString *temp = [s stringByReplacingOccurrencesOfString:targetPrefix withString:@""];
+            str = [str stringByAppendingString:temp];
+            secondHashTagLoc = [str length];
         }
         else
         {
-            label.textColor = [UIColor blackColor];
+            str = [str stringByAppendingString:s];
         }
-        
-        // 6. Lay out the labels so it forms a complete sentence again:
-        
-        // If this word doesn't fit at end of this line, then move it to the next
-        // line and make sure any leading spaces are stripped off so it aligns nicely:
-        
-        [label sizeToFit];
-        
-        if (self.flaticonView.frame.size.width < wordLocation.x + label.bounds.size.width)
-        {
-            wordLocation.x = 0.0;                       // move this word all the way to the left...
-            wordLocation.y += label.frame.size.height;  // ...on the next line
-            
-            // And trim of any leading white space:
-            NSRange startingWhiteSpaceRange = [label.text rangeOfString:@"^\\s*"
-                                                                options:NSRegularExpressionSearch];
-            if (startingWhiteSpaceRange.location == 0)
-            {
-                label.text = [label.text stringByReplacingCharactersInRange:startingWhiteSpaceRange
-                                                                 withString:@""];
-                [label sizeToFit];
-            }
-        }
-        
-        // Set the location for this label:
-        label.frame = CGRectMake(wordLocation.x,
-                                 wordLocation.y,
-                                 label.frame.size.width,
-                                 label.frame.size.height);
-        // Show this label:
-        [self.flaticonView addSubview:label];
-        
-        // Update the horizontal position for the next word:
-        wordLocation.x += label.frame.size.width;
     }
-}
-- (void)tapOnFlaticonLink:(UITapGestureRecognizer *)tapGesture
-{
-    if (tapGesture.state == UIGestureRecognizerStateEnded)
-    {
-        NSLog(@"User tapped");
-    }
+    TTTlabel.text = str;
+    TTTlabel.linkAttributes = @{NSForegroundColorAttributeName : self.view.tintColor};//change default color to tint color
+    NSRange range = NSMakeRange(firstHashTagLoc,secondHashTagLoc-firstHashTagLoc);
+    [TTTlabel addLinkToURL:[NSURL URLWithString:targetLink]withRange:range];
 }
 
-
-- (void)tapOnPrivacyPolicyLink:(UITapGestureRecognizer *)tapGesture
+#pragma mark TTTAttributedLabelDelegate
+-(void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    if (tapGesture.state == UIGestureRecognizerStateEnded)
-    {
-        NSLog(@"User tapped on the Privacy Policy link");
-    }
+    [[[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open Link in Safari", nil), nil] showInView:self.view];
 }
+
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
