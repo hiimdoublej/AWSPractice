@@ -10,7 +10,7 @@
 
 
 @interface CreditsViewController ()
-
+@property NSDictionary* correspondence;
 @end
 
 @implementation CreditsViewController
@@ -18,11 +18,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSString *flaticonString = NSLocalizedString(@"Report icon, application icon both made by \"Madebyoliver\" from #<flaticon>flaticon#.",@"Credits View");
-    NSString *AWSString = NSLocalizedString(@"Database and login identity management provide by #<AWS>Amazon Web Services#.",@"Credits View");
+    _correspondence = @{@"<cocoapods>":@"https://cocoapods.org/",
+                        @"<podfile>":@"https://github.com/hiimdoublej/AWSPractice/blob/master/Podfile",
+                        @"<github>":@"https://github.com/hiimdoublej/AWSPractice",
+                        @"<flaticon>":@"http://www.flaticon.com/authors/madebyoliver",
+                        @"<AWS>":@"https://aws.amazon.com"};
+    
+    NSString *flaticonString = NSLocalizedString(@"Report icon, application icon both made by \"Madebyoliver\" from #<flaticon>Flaticon#.",@"Credits View");
+    NSString *AWSString = NSLocalizedString(@"Database and login identity management provided by #<AWS>Amazon Web Services#.",@"Credits View");
+    NSString *dependenciesString = NSLocalizedString(@"Third party dependencies management made easier by #<cocoapods>CocoaPods#, list of pods used in this project are in the#<podfile>Podfile# located at my #<github>Github repo#.", @"Credits View");
     
     [self configureTTTLabel:_flaticonLabel withLocalizedString:flaticonString];
     [self configureTTTLabel:_AWSLabel withLocalizedString:AWSString];
+    [self configureTTTLabel:_CocoapodsLabel withLocalizedString:dependenciesString];
     
     NSLog(@"CreditsViewDidLoad");
     // Do any additional setup after loading the view.
@@ -33,64 +41,60 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)toFlaticon:(id)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.flaticon.com/authors/madebyoliver"]];
-}
-
-- (IBAction)toAWS:(id)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://aws.amazon.com/"]];
-}
 
 - (IBAction)isDone:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^(void){}];
 }
-
 -(void)configureTTTLabel:(TTTAttributedLabel*)TTTlabel withLocalizedString:(NSString*)localizedString
 {
-    NSString *targetPrefix;
-    NSString *targetLink;
+    NSMutableDictionary *links = [NSMutableDictionary new];//a dict to store the tags and it's location in string
     
-    //check string type(aws or flaticon)
-    if([localizedString rangeOfString:@"#<AWS>"].location != NSNotFound)
-    {
-        targetPrefix = @"<AWS>";
-        targetLink = @"https://aws.amazon.com";
-    }
-    else if ([localizedString rangeOfString:@"#<flaticon>"].location != NSNotFound)
-    {
-        targetPrefix = @"<flaticon>";
-        targetLink = @"http://www.flaticon.com/authors/madebyoliver";
-    }
-    
-    TTTlabel.delegate = self;
-    NSArray *localizedStringPieces = [localizedString componentsSeparatedByString:@"#"];
+    TTTlabel.delegate = self;//set delegate for the delegate methods to trigger
+    NSArray *localizedStringPieces = [localizedString componentsSeparatedByString:@"#"];//get components in string to parse
     NSUInteger firstHashTagLoc = 0;
     NSUInteger secondHashTagLoc = 0;
     NSString *str = @"";
     
     for (NSString *s in localizedStringPieces)
     {
+        BOOL pieceAppended = NO;
         if ([s isEqualToString:@""])
         {
-            continue;//skip loop if empty
+            continue;//skip this iteration of loop if this piece empty
         }
-        if([s hasPrefix:targetPrefix])
+        for (NSString *prefix in [_correspondence allKeys])
         {
-            firstHashTagLoc = [str length];
-            NSString *temp = [s stringByReplacingOccurrencesOfString:targetPrefix withString:@""];
-            str = [str stringByAppendingString:temp];
-            secondHashTagLoc = [str length];
+        //search to see if this piece is a prefix
+            if([s hasPrefix:prefix])
+            {
+                firstHashTagLoc = [str length];
+                NSString *temp = [s stringByReplacingOccurrencesOfString:prefix withString:@""];
+                str = [str stringByAppendingString:temp];
+                secondHashTagLoc = [str length];
+                NSRange range = NSMakeRange(firstHashTagLoc,secondHashTagLoc-firstHashTagLoc);
+                [links setObject:prefix forKey:NSStringFromRange(range)];//associate the range with the prefix
+                pieceAppended = YES;
+            }
         }
-        else
+        if(!pieceAppended)
         {
+        //the code reaches here is the text is just a normal text not a link
             str = [str stringByAppendingString:s];
         }
     }
-    TTTlabel.text = str;
+    TTTlabel.text = str;//set string first before setting links
     TTTlabel.linkAttributes = @{NSForegroundColorAttributeName : self.view.tintColor};//change default color to tint color
-    NSRange range = NSMakeRange(firstHashTagLoc,secondHashTagLoc-firstHashTagLoc);
-    [TTTlabel addLinkToURL:[NSURL URLWithString:targetLink]withRange:range];
+    
+    for(NSString* rangeString in [links allKeys])
+    {
+        //add links into the TTTAttributedLabel
+        NSRange range = NSRangeFromString(rangeString);//restore range from NSString
+        NSString *tag = [links objectForKey:rangeString];//get the prefix tag
+        NSString *url = [_correspondence objectForKey:tag];//get link from prefix tag
+        [TTTlabel addLinkToURL:[NSURL URLWithString:url] withRange:range];//add link
+    }
 }
+
 
 #pragma mark TTTAttributedLabelDelegate
 -(void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url

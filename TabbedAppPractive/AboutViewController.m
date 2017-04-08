@@ -29,6 +29,10 @@
     [self dismissViewControllerAnimated:YES completion:^(void){}];
 }
 #pragma mark set stuff
+-(void) configureAuthor
+{
+    self.authorLabel.text = NSLocalizedString(@"Author:hiimdoublej", @"line for author in about view");
+}
 -(void) configureEmail
     {//configure the email label(text,delegate,localizations)
         self.emailLabel.delegate = self;

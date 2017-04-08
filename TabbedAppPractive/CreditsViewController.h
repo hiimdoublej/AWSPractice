@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) IBOutlet TTTAttributedLabel *flaticonLabel;
 @property (strong, nonatomic) IBOutlet TTTAttributedLabel *AWSLabel;
+@property (strong, nonatomic) IBOutlet TTTAttributedLabel *CocoapodsLabel;
 
 
 

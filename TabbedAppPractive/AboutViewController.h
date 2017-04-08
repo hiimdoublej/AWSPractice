@@ -11,9 +11,10 @@
 #import <TTTAttributedLabel/TTTAttributedLabel.h>
 
 @interface AboutViewController : UIViewController<MFMailComposeViewControllerDelegate,TTTAttributedLabelDelegate>
+@property (strong, nonatomic) IBOutlet UILabel *authorLabel;
 
-    @property (strong, nonatomic) IBOutlet TTTAttributedLabel *emailLabel;
+@property (strong, nonatomic) IBOutlet TTTAttributedLabel *emailLabel;
 
-    @property (strong, nonatomic) IBOutlet TTTAttributedLabel *githubLink;
+@property (strong, nonatomic) IBOutlet TTTAttributedLabel *githubLink;
 
 @end
