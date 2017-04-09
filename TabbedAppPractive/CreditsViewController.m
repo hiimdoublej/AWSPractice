@@ -15,7 +15,7 @@
 
 @implementation CreditsViewController
 
-
+#pragma mark view life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     _correspondence = @{@"<cocoapods>":@"https://cocoapods.org/",
@@ -41,10 +41,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+#pragma mark IBActions
 - (IBAction)isDone:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^(void){}];
 }
+#pragma mark TTTLabel configs
 -(void)configureTTTLabel:(TTTAttributedLabel*)TTTlabel withLocalizedString:(NSString*)localizedString
 {
     NSMutableDictionary *links = [NSMutableDictionary new];//a dict to store the tags and it's location in string
@@ -99,7 +100,15 @@
 #pragma mark TTTAttributedLabelDelegate
 -(void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    [[[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open Link in Safari", nil), nil] showInView:self.view];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[url absoluteString] message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *open = [UIAlertAction actionWithTitle:NSLocalizedString(@"Open Link in Safari", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        NSLog(@"%@",[action title]);
+        [[UIApplication sharedApplication] openURL:url];
+    }];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){}];
+    [alert addAction:open];
+    [alert addAction:cancel];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 

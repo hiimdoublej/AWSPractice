@@ -102,7 +102,14 @@
         case 3:
             cell.textLabel.text = NSLocalizedString(@"Comment:",@"Comment in details view");
             [cell.detailTextLabel setNumberOfLines:0];
-            cell.detailTextLabel.text = item.RideComment;
+            if([item.RideComment isEqualToString:@"No comment."])
+            {
+                cell.detailTextLabel.text = NSLocalizedString(@"No comment.",@"no comment for taxi");
+            }
+            else
+            {
+                cell.detailTextLabel.text = item.RideComment;
+            }
 //            cell.detailTextLabel.text = @"this is just the sample example of how to calculate the dynamic height for tableview cell which is of around 7 to 8 lines. you will need to set the height of this string first, not seems to be calculated in cellForRowAtIndexPath method.";
             break;
         default:

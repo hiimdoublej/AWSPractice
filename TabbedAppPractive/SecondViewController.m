@@ -212,7 +212,7 @@
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
         //disable button
         [self.Submit setEnabled:NO];
-        [[self.Submit titleLabel]setText:@"Submitting....."];
+        [[self.Submit titleLabel]setText:NSLocalizedString(@"Submitting.....",@"Submitting data to dynamodb")];
         
         //show activity indicator
         [self.activityIndicator setCenter:CGPointMake(self.view.frame.size.width/2.0, self.view.frame.size.height/2.0)];
@@ -421,7 +421,7 @@
 {
     if(component == 0)
     {
-        NSString *res = NSLocalizedString([self.topLevelAdministrativeDivisions objectAtIndex:row],@"localize string for chinese (ch-Hant)");
+        NSString *res = NSLocalizedString([self.topLevelAdministrativeDivisions objectAtIndex:row],@"localize string for chinese (zh-Hant)");
         return res;
     }
     else

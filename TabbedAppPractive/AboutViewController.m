@@ -109,8 +109,12 @@
     }
     // Show error if no mail account is active
     else {
-        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"You must have a mail account in order to send an email" delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
-        [alertView show];
+//        UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"You must have a mail account in order to send an email" delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
+//        [alertView show];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"You must have a email account set up in order to send an email.",nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
     }
 }
     
@@ -128,7 +132,14 @@
             [self toEmail];
         }
         else{
-            [[[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open Link in Safari", nil), nil] showInView:self.view];
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[url absoluteString] message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+            UIAlertAction *open = [UIAlertAction actionWithTitle:NSLocalizedString(@"Open Link in Safari", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+                 [[UIApplication sharedApplication] openURL:url];
+                }];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+            [alert addAction:open];
+            [alert addAction:cancel];
+            [self presentViewController:alert animated:YES completion:nil];
         }
     }
     

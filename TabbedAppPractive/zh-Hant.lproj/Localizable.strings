@@ -397,31 +397,88 @@
 "Longtan"="龍潭區";
 "Guishan"="龜山區";
 
-//details view labels
-"Average Rating:"="平均得分:";
-"Rating:"="評分:";
-"Date:"="日期:";
-"Location:"="地點:";
-"Overall Rating:"="整體評分:";
-"Comment:"="備註:";
-
-//about view labels
-"Some of the codes are #<github>here#." = "大部分的原始碼在#<github>這裡#";
-"You can contact me via #<email>email#." = "可以透過#<email>電子信箱#聯絡我";
+/* line for author in about view */
 "Author:hiimdoublej" = "作者:hiimdoublej";
 
-//report view
-"Succeeded" = "成功";
-"Successfully submitted data for approval !" = "成功送出資料,審查通過後便會上傳至資料庫！";
-"Plate number length incorrect, please check your input !" = "車牌號碼長度不正確,請重新檢查輸入";
-"Please check your input again." = "請重新檢查輸入";
-//credits view
-"Report icon, application icon both made by \"Madebyoliver\" from #<flaticon>Flaticon#." = "回報以及應用程式圖案是由\"Madebyoliver\"在#<flaticon>Flaticon#上面所提供的";
+/* To display average rating associated with this plate number */
+"Average Rating:" = "平均得分:";
 
+/* No comment provided by engineer. */
+"Cancel" = "取消";
+
+/* Comment in details view */
+"Comment:" = "備註:";
+
+/* Credits View */
 "Database and login identity management provided by #<AWS>Amazon Web Services#." = "資料庫存取以及用戶管理是由#<AWS>亞馬遜網路服務#所提供";
 
+/* Date in details view */
+"Date:" = "日期:";
+
+/* Error
+ error */
+"Error" = "錯誤";
+
+/* error msg */
+"Error retrieving data from server. Please try again in a moment." = "無法從資料庫取得資料！請稍候再試。";
+
+/* alert msg */
+"Incorrect plate number, please check your input !" = "車牌號碼格式錯誤！請檢查您的輸入。";
+
+/* invalid input */
+"Invalid input" = "格式錯誤";
+
+/* Location in details view */
+"Location:" = "地點:";
+
+/* no comment for taxi */
+"No comment." = "這次回報沒有留下任何意見。";
+
+/* error msg */
+"No previous reports with this plate number, if you had a ride with that cab, feel free to share your experience with others using the report tab !" = "還沒有人回報過這台小黃喔！如果你剛從這台小黃上面下車，可以使用回報頁面分享一下乘車資訊喔！";
+
+/* OK */
+"OK" = "";
+
+/* alert */
+"Oops!" = "";
+
+/* No comment provided by engineer. */
+"Open Link in Safari" = "使用Safari打開";
+
+/* Ovr rating in details view */
+"Overall Rating:" = "整體評分:";
+
+/* alert msg */
+"Plate number length incorrect, please check your input !" = "車牌號碼長度不正確,請重新檢查輸入";
+
+/* error msg */
+"Please check your input again." = "請重新檢查輸入";
+
+/* Rating */
+"Rating:" = "評分:";
+
+/* Credits View */
+"Report icon, application icon both made by \"Madebyoliver\" from #<flaticon>Flaticon#." = "回報以及應用程式圖案是由\"Madebyoliver\"在#<flaticon>Flaticon#上面所提供的";
+
+/* translate the stuff between #'s but not the tag */
+"Some of the codes are #<github>here#." = "大部分的原始碼在#<github>這裡#";
+
+/* Submitting data to dynamodb */
+"Submitting....." = "送出.....";
+
+/* Succeeded */
+"Succeeded" = "成功";
+
+/* alert msg */
+"Successfully submitted data for approval !" = "成功送出資料,審查通過後便會上傳至資料庫！";
+
+/* Credits View */
 "Third party dependencies management made easier by #<cocoapods>CocoaPods#, list of pods used in this project are in the#<podfile>Podfile# located at my #<github>Github repo#." = "這個程式使用#<cocoapods>CocoaPods#管理第三方插件, 所使用的插件清單在我的#<github>Github repo#裡面的#<podfile>Podfile#裡都有";
 
+/* translate the stuff between #'s but not the tag */
+"You can contact me via #<email>email#." = "可以透過#<email>電子信箱#聯絡我";
 
-//others
-"Open Link in Safari" = "使用Safari打開";
+/* No comment provided by engineer. */
+"You must have a email account set up in order to send an email." = "要先設定好一個以上的email帳戶才能從手機傳送email喔！";
+
